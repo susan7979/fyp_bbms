@@ -68,7 +68,13 @@ class _DonatePageState extends State<DonatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register for Donating Blood'),
+        title: Text(
+          'Register for Donating Blood',
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        elevation: 0,
+        backgroundColor: Colors.grey[50],
       ),
       body: ListView(
         padding: EdgeInsets.all(16),

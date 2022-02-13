@@ -72,7 +72,13 @@ class _RequestBloodState extends State<RequestBlood> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Request Blood'),
+        title: Text(
+          'Request Blood',
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        elevation: 0,
+        backgroundColor: Colors.grey[50],
       ),
       body: ListView(
         padding: EdgeInsets.all(16),

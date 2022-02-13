@@ -80,6 +80,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "focused_menu",
+      "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/focused_menu-1.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "font_awesome_flutter",
+      "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-9.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4",
       "packageUri": "lib/",
@@ -200,7 +212,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-02-13T04:54:33.667599Z",
+  "generated": "2022-02-13T08:51:01.745002Z",
   "generator": "pub",
   "generatorVersion": "2.14.0"
 }

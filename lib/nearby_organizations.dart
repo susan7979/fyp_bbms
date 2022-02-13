@@ -36,7 +36,13 @@ class _NearbyOrganizationState extends State<NearbyOrganization> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Nearby Organizaiton"),
+        title: Text(
+          "Nearby Organizaiton",
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        elevation: 0,
+        backgroundColor: Colors.grey[50],
       ),
       body: ListView.builder(
           itemCount: _nearbyOrganizations.length,

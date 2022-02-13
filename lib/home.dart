@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp_bbms/blood_request_details.dart';
 import 'package:fyp_bbms/donor_registration_details.dart';
 import 'package:fyp_bbms/models/blood_request.dart';
 import 'package:fyp_bbms/models/donor_register.dart';
 import 'package:fyp_bbms/navigation_drawer.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -85,95 +89,148 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  getRequesterDetails(
+      String name,
+      String gender,
+      String age,
+      String hospitalName,
+      String hospitalAddress,
+      String email,
+      String phoneNumber,
+      String bloodGroup,
+      String bloodAmount,
+      String reason,
+      BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => BloodRequestDetails(
+                  name: name,
+                  gender: gender,
+                  age: age,
+                  hospitalName: hospitalName,
+                  hospitalAddress: hospitalAddress,
+                  email: email,
+                  phoneNumber: phoneNumber,
+                  bloodGroup: bloodGroup,
+                  bloodAmount: bloodAmount,
+                  reason: reason,
+                )));
+  }
+
+  getDonorDetails(
+      String name,
+      String gender,
+      String age,
+      String address,
+      String email,
+      String phoneNumber,
+      String bloodGroup,
+      String bloodAmount,
+      BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DonorRegistrationDetails(
+                  name: name,
+                  gender: gender,
+                  age: age,
+                  address: address,
+                  email: email,
+                  phoneNumber: phoneNumber,
+                  bloodGroup: bloodGroup,
+                  bloodAmount: bloodAmount,
+                )));
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(top: 100.0),
-        child: ListView.builder(
-            itemCount: _bloodRequest.isEmpty ? 0 : _bloodRequest.length,
-            itemBuilder: (context, index) {
-              BloodRequest bloodRequest = _bloodRequest[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  elevation: 12,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BloodRequestDetails()));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Center(
-                          child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text(bloodRequest.name),
-                            subtitle: Text(bloodRequest.bloodGroup),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            TextButton(
-                              child: const Text('Contact Patient'),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8),
-                            TextButton(
-                              child: const Text('Location'),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }),
-      ),
       ListView.builder(
-          itemCount: _donorRegister.isEmpty ? 0 : _donorRegister.length,
+          itemCount: _bloodRequest.isEmpty ? 0 : _bloodRequest.length,
           itemBuilder: (context, index) {
-            DonorRegister donorRegister = _donorRegister[index];
+            BloodRequest bloodRequest = _bloodRequest[index];
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DonorRegistrationDetails()));
-                },
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  elevation: 12,
+              child: Card(
+                color: Colors.red[200],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                elevation: 12,
+                child: InkWell(
+                  onTap: () {
+                    getRequesterDetails(
+                        bloodRequest.name,
+                        bloodRequest.gender,
+                        bloodRequest.age,
+                        bloodRequest.hospitalName,
+                        bloodRequest.hospitalAddress,
+                        bloodRequest.email,
+                        bloodRequest.phoneNumber,
+                        bloodRequest.bloodGroup,
+                        bloodRequest.bloodAmount,
+                        bloodRequest.reason,
+                        context);
+                  },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text(donorRegister.name),
-                        subtitle: Text(donorRegister.bloodGroup),
+                      Center(
+                        child: ListTile(
+                          leading: FaIcon(FontAwesomeIcons.user),
+                          title: Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  bloodRequest.name,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  bloodRequest.bloodGroup,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  bloodRequest.hospitalName,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  bloodRequest.hospitalAddress,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           TextButton(
-                            child: const Text('Reach out to donor'),
+                            child: const Text(
+                              'Contact Patient',
+                              style: TextStyle(fontSize: 16),
+                            ),
                             onPressed: () {/* ... */},
                           ),
                           const SizedBox(width: 8),
                           TextButton(
-                            child: const Text('Location'),
+                            child: const Text(
+                              'Location',
+                              style: TextStyle(fontSize: 16),
+                            ),
                             onPressed: () {/* ... */},
                           ),
                           const SizedBox(width: 8),
@@ -185,26 +242,119 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }),
+      ListView.builder(
+          itemCount: _donorRegister.isEmpty ? 0 : _donorRegister.length,
+          itemBuilder: (context, index) {
+            DonorRegister donorRegister = _donorRegister[index];
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  getDonorDetails(
+                      donorRegister.name,
+                      donorRegister.gender,
+                      donorRegister.age,
+                      donorRegister.address,
+                      donorRegister.email,
+                      donorRegister.phoneNumber,
+                      donorRegister.bloodGroup,
+                      donorRegister.bloodAmount,
+                      context);
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  color: Colors.red[200],
+                  elevation: 12,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                            leading: FaIcon(
+                              FontAwesomeIcons.user,
+                              color: Colors.grey[100],
+                            ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  donorRegister.name,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  donorRegister.bloodGroup,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  donorRegister.address,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            TextButton(
+                              child: const Text(
+                                'Reach out to donor',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              onPressed: () {},
+                            ),
+                            const SizedBox(width: 8),
+                            TextButton(
+                              child: const Text(
+                                'Location',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              onPressed: () {/* ... */},
+                            ),
+                            const SizedBox(width: 8),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
     ];
     return Scaffold(
       appBar: AppBar(
-        title: Text('BloodSource'),
+        title: Text(
+          'BloodSource',
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        elevation: 0,
+        backgroundColor: Colors.grey[50],
       ),
       drawer: NavigationDrawer(),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: FaIcon(FontAwesomeIcons.listAlt),
             label: 'Blood Request',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: FaIcon(FontAwesomeIcons.list),
             label: 'Donor Registration',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.red[800],
         onTap: _onItemTapped,
       ),
     );
