@@ -20,7 +20,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<BloodRequest> _bloodRequest = [];
   List<DonorRegister> _donorRegister = [];
+  List<BloodRequest> filteredReqData = [];
+  List<DonorRegister> filteredDonorData = [];
   bool _loading = true;
+  bool isSearching = false;
 
   Future<List<BloodRequest>> getAllBloodRequest() async {
     try {
@@ -77,15 +80,28 @@ class _HomePageState extends State<HomePage> {
     _loading = true;
     getAllBloodRequest().then((bloodRequest) {
       setState(() {
-        _bloodRequest = bloodRequest;
+        _bloodRequest = filteredReqData = bloodRequest;
         _loading = false;
       });
     });
     getAllDonorRegister().then((donorRegister) {
       setState(() {
-        _donorRegister = donorRegister;
+        _donorRegister = filteredDonorData = donorRegister;
         _loading = false;
       });
+    });
+  }
+
+  void _filterPerson(value) {
+    setState(() {
+      filteredReqData = _bloodRequest
+          .where((element) =>
+              element.bloodGroup.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      filteredDonorData = _donorRegister
+          .where((element) =>
+              element.bloodGroup.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     });
   }
 
@@ -147,9 +163,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
       ListView.builder(
-          itemCount: _bloodRequest.isEmpty ? 0 : _bloodRequest.length,
+          itemCount: filteredReqData.isEmpty ? 0 : filteredReqData.length,
           itemBuilder: (context, index) {
-            BloodRequest bloodRequest = _bloodRequest[index];
+            BloodRequest bloodRequest = filteredReqData[index];
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
@@ -246,9 +262,9 @@ class _HomePageState extends State<HomePage> {
             );
           }),
       ListView.builder(
-          itemCount: _donorRegister.isEmpty ? 0 : _donorRegister.length,
+          itemCount: filteredDonorData.isEmpty ? 0 : filteredDonorData.length,
           itemBuilder: (context, index) {
-            DonorRegister donorRegister = _donorRegister[index];
+            DonorRegister donorRegister = filteredDonorData[index];
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
@@ -335,10 +351,42 @@ class _HomePageState extends State<HomePage> {
     ];
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'BloodSource',
-          style: TextStyle(color: Theme.of(context).primaryColor),
-        ),
+        title: !isSearching
+            ? Text(
+                'BloodSource',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              )
+            : TextField(
+                onChanged: (value) {
+                  _filterPerson(value);
+                },
+                decoration: InputDecoration(
+                    hintText: "Search ",
+                    hintStyle: TextStyle(color: Colors.white),
+                    icon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor)),
+              ),
+        actions: [
+          isSearching
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isSearching = false;
+                      filteredReqData = _bloodRequest;
+                      filteredDonorData = _donorRegister;
+                    });
+                  },
+                  icon: Icon(Icons.cancel),
+                )
+              : IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isSearching = true;
+                    });
+                  },
+                  icon: Icon(Icons.search),
+                )
+        ],
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         elevation: 0,
         backgroundColor: Colors.grey[50],

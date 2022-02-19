@@ -288,25 +288,25 @@ class _RegisterState extends State<Register> {
                               fontWeight: FontWeight.w600, fontSize: 18),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      MaterialButton(
-                        minWidth: double.infinity,
-                        height: 60,
-                        onPressed: () {
-                          verify();
-                        },
-                        color: Colors.greenAccent,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
-                        child: const Text(
-                          "Verify",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 18),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 40,
+                      // ),
+                      // MaterialButton(
+                      //   minWidth: double.infinity,
+                      //   height: 60,
+                      //   onPressed: () {
+                      //     verify();
+                      //   },
+                      //   color: Colors.greenAccent,
+                      //   elevation: 0,
+                      //   shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(50)),
+                      //   child: const Text(
+                      //     "Verify",
+                      //     style: TextStyle(
+                      //         fontWeight: FontWeight.w600, fontSize: 18),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

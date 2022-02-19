@@ -123,7 +123,7 @@ class BloodRequestDetails extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    launch('mailto:smith@example.org');
+                    launch('mailto:$email');
                   },
                   icon: Icon(
                     Icons.mail,
