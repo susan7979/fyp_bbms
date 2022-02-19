@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:fyp_bbms/models/blood_request.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BloodRequestDetails extends StatelessWidget {
   final String name;
@@ -116,6 +118,41 @@ class BloodRequestDetails extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    launch('mailto:smith@example.org');
+                  },
+                  icon: Icon(
+                    Icons.mail,
+                    color: Colors.red,
+                    size: 35,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    launch('tel:$phoneNumber');
+                  },
+                  icon: Icon(
+                    Icons.call,
+                    color: Colors.green,
+                    size: 35,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    // Share.share('check out my website https://example.com');
+                  },
+                  icon: Icon(
+                    Icons.share,
+                    color: Colors.blue,
+                    size: 35,
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

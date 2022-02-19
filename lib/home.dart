@@ -152,91 +152,94 @@ class _HomePageState extends State<HomePage> {
             BloodRequest bloodRequest = _bloodRequest[index];
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.red[200],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                elevation: 12,
-                child: InkWell(
-                  onTap: () {
-                    getRequesterDetails(
-                        bloodRequest.name,
-                        bloodRequest.gender,
-                        bloodRequest.age,
-                        bloodRequest.hospitalName,
-                        bloodRequest.hospitalAddress,
-                        bloodRequest.email,
-                        bloodRequest.phoneNumber,
-                        bloodRequest.bloodGroup,
-                        bloodRequest.bloodAmount,
-                        bloodRequest.reason,
-                        context);
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Center(
-                        child: ListTile(
-                          leading: FaIcon(FontAwesomeIcons.user),
-                          title: Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  bloodRequest.name,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  bloodRequest.bloodGroup,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  bloodRequest.hospitalName,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  bloodRequest.hospitalAddress,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ],
+              child: InkWell(
+                onTap: () {
+                  getRequesterDetails(
+                      bloodRequest.name,
+                      bloodRequest.gender,
+                      bloodRequest.age,
+                      bloodRequest.hospitalName,
+                      bloodRequest.hospitalAddress,
+                      bloodRequest.email,
+                      bloodRequest.phoneNumber,
+                      bloodRequest.bloodGroup,
+                      bloodRequest.bloodAmount,
+                      bloodRequest.reason,
+                      context);
+                },
+                child: Card(
+                  color: Colors.red[200],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  elevation: 12,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Center(
+                          child: ListTile(
+                            leading: FaIcon(FontAwesomeIcons.user),
+                            title: Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    bloodRequest.name,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    bloodRequest.bloodGroup,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    bloodRequest.hospitalName,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    bloodRequest.hospitalAddress,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          TextButton(
-                            child: const Text(
-                              'Contact Patient',
-                              style: TextStyle(fontSize: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            TextButton(
+                              child: const Text(
+                                'Contact Patient',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              onPressed: () {/* ... */},
                             ),
-                            onPressed: () {/* ... */},
-                          ),
-                          const SizedBox(width: 8),
-                          TextButton(
-                            child: const Text(
-                              'Location',
-                              style: TextStyle(fontSize: 16),
+                            const SizedBox(width: 8),
+                            TextButton(
+                              child: const Text(
+                                'Location',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              onPressed: () {/* ... */},
                             ),
-                            onPressed: () {/* ... */},
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 8),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -345,12 +348,12 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.listAlt),
+            icon: FaIcon(FontAwesomeIcons.exclamationCircle),
             label: 'Blood Request',
           ),
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.list),
-            label: 'Donor Registration',
+            label: 'Donors List',
           ),
         ],
         currentIndex: _selectedIndex,

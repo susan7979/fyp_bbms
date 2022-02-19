@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp_bbms/login.dart';
 import 'package:http/http.dart' as http;
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 import 'main.dart';
 
@@ -17,6 +19,8 @@ class _RegisterState extends State<Register> {
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool verifyButton = false;
+  String verifyLink = '';
 
   Future register() async {
     var url =
@@ -25,8 +29,24 @@ class _RegisterState extends State<Register> {
       "username": _user.text,
       "password": _pass.text,
     });
-    var data = json.decode(response.body);
-    if (data == "Error") {
+    var link = json.decode(response.body);
+    print('susan');
+
+    setState(() {
+      verifyLink = link;
+      verifyButton = true;
+      Fluttertoast.showToast(
+          msg: "Check your mail and verify",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    });
+    sendMail();
+
+    if (link == "Error") {
       Fluttertoast.showToast(
           msg: "This user already exist",
           toastLength: Toast.LENGTH_SHORT,
@@ -35,12 +55,12 @@ class _RegisterState extends State<Register> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MyApp(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => MyApp(),
+      //   ),
+      // );
     } else {
       Fluttertoast.showToast(
           msg: "Registration completed",
@@ -50,12 +70,45 @@ class _RegisterState extends State<Register> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Register(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => Login(),
+      //   ),
+      // );
+    }
+  }
+
+  Future verify() async {
+    var response = await http.post(Uri.parse(verifyLink));
+
+    var link = json.decode(response.body);
+    setState(() {
+      verifyButton = false;
+    });
+    print(link);
+  }
+
+  sendMail() async {
+    String username = 'gautamsusan15@gmail.com';
+    String password = '###asdf1234###';
+
+    print(verifyLink);
+
+    final smtpServer = gmail(username, password);
+
+    final message = Message()
+      ..from = Address(username, 'Susan Gautam')
+      ..recipients.add('${_user.text}')
+      ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
+      ..html =
+          "<h1>Test</h1>\n<p> <a href='$verifyLink'>Click here to verify</a></p>";
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
     }
   }
 
@@ -78,13 +131,13 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            height: MediaQuery.of(context).size.height - 50,
-            width: double.infinity,
+      body: Form(
+        key: _formKey,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          height: MediaQuery.of(context).size.height - 50,
+          width: double.infinity,
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -207,31 +260,54 @@ class _RegisterState extends State<Register> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(top: 3, left: 3),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: const Border(
-                        bottom: BorderSide(color: Colors.black),
-                        top: BorderSide(color: Colors.black),
-                        left: BorderSide(color: Colors.black),
-                        right: BorderSide(color: Colors.black),
-                      )),
-                  child: MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60,
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        register();
-                      }
-                    },
-                    color: Colors.greenAccent,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                    child: const Text(
-                      "Sign up",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                    ),
+                  // decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(50),
+                  //     border: const Border(
+                  //       bottom: BorderSide(color: Colors.black),
+                  //       top: BorderSide(color: Colors.black),
+                  //       left: BorderSide(color: Colors.black),
+                  //       right: BorderSide(color: Colors.black),
+                  //     )),
+                  child: Column(
+                    children: [
+                      MaterialButton(
+                        minWidth: double.infinity,
+                        height: 60,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            register();
+                          }
+                        },
+                        color: Colors.greenAccent,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        child: const Text(
+                          "Sign up",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 18),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      MaterialButton(
+                        minWidth: double.infinity,
+                        height: 60,
+                        onPressed: () {
+                          verify();
+                        },
+                        color: Colors.greenAccent,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        child: const Text(
+                          "Verify",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 18),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Row(

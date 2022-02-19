@@ -26,7 +26,7 @@ class _RequestBloodState extends State<RequestBlood> {
 
   Future requestBlood() async {
     var url = Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/user_dashboard/request_blood.php");
+        "http://169.254.7.56/flutter-login-signup/user_dashboard/request_blood.php");
     var response = await http.post(url, body: {
       "name": _name.text,
       "gender": _gender.text,

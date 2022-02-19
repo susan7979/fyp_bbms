@@ -44,6 +44,35 @@ class DonorRegistrationDetails extends StatelessWidget {
           Text(phoneNumber),
           Text(bloodGroup),
           Text(bloodAmount),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.mail,
+                  color: Colors.red,
+                  size: 35,
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.call,
+                  color: Colors.green,
+                  size: 35,
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.share,
+                  color: Colors.blue,
+                  size: 35,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
