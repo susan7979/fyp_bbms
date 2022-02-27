@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fyp_bbms/auth/login.dart';
 import 'package:fyp_bbms/home.dart';
 import 'package:fyp_bbms/main.dart';
 import 'package:fyp_bbms/nav/nearby_organizations.dart';
+import 'package:fyp_bbms/nav/post_campaigns.dart';
 import 'package:fyp_bbms/nav/request_blood.dart';
 
 import 'about_me.dart';
-import 'donate_blood.dart';
+import 'register_donor.dart';
 
 class NavigationDrawer extends StatelessWidget {
   final padding = EdgeInsets.symmetric(
@@ -51,9 +53,23 @@ class NavigationDrawer extends StatelessWidget {
               height: 48,
             ),
             buildMenuItem(
+                text: 'Create Donation Campaign',
+                icon: Icons.campaign,
+                onClicked: () => selectedItem(context, 4)),
+            const SizedBox(
+              height: 48,
+            ),
+            buildMenuItem(
                 text: 'About me',
                 icon: Icons.shield,
-                onClicked: () => selectedItem(context, 4)),
+                onClicked: () => selectedItem(context, 5)),
+            const SizedBox(
+              height: 48,
+            ),
+            buildMenuItem(
+                text: 'Logout',
+                icon: Icons.logout,
+                onClicked: () => selectedItem(context, 6)),
             const SizedBox(
               height: 48,
             ),
@@ -164,7 +180,7 @@ class NavigationDrawer extends StatelessWidget {
         break;
       case 2:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => DonatePage(),
+          builder: (context) => RegisterDonor(),
         ));
         break;
       case 3:
@@ -172,10 +188,23 @@ class NavigationDrawer extends StatelessWidget {
           builder: (context) => NearbyOrganization(),
         ));
         break;
-
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PostCampaigns(),
+        ));
+        break;
+
+      case 5:
+        Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AboutMe(),
+        ));
+        break;
+      case 6:
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Login(),
         ));
         break;
     }
