@@ -1,16 +1,17 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:fyp_bbms/blood_request_details.dart';
-import 'package:fyp_bbms/donor_registration_details.dart';
+import 'package:fyp_bbms/blood_request/blood_request_card.dart';
+import 'package:fyp_bbms/blood_request/blood_request_details.dart';
+import 'package:fyp_bbms/donor_registration/donor_registration_card.dart';
+import 'package:fyp_bbms/donor_registration/donor_registration_details.dart';
 import 'package:fyp_bbms/models/blood_request.dart';
 import 'package:fyp_bbms/models/donor_register.dart';
-import 'package:fyp_bbms/navigation_drawer.dart';
+import 'package:fyp_bbms/nav/donate_blood.dart';
+import 'package:fyp_bbms/nav/navigation_drawer.dart';
+import 'package:fyp_bbms/nav/request_blood.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   List<DonorRegister> filteredDonorData = [];
   bool _loading = true;
   bool isSearching = false;
+  final isDialOpen = ValueNotifier(false);
 
   Future<List<BloodRequest>> getAllBloodRequest() async {
     try {
@@ -183,81 +185,7 @@ class _HomePageState extends State<HomePage> {
                       bloodRequest.reason,
                       context);
                 },
-                child: Card(
-                  color: Colors.red[200],
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  elevation: 12,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Center(
-                          child: ListTile(
-                            leading: FaIcon(FontAwesomeIcons.user),
-                            title: Padding(
-                              padding: const EdgeInsets.only(top: 12.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    bloodRequest.name,
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    bloodRequest.bloodGroup,
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    bloodRequest.hospitalName,
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    bloodRequest.hospitalAddress,
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            TextButton(
-                              child: const Text(
-                                'Contact Patient',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8),
-                            TextButton(
-                              child: const Text(
-                                'Location',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                child: BloodRequestCard(bloodRequest: bloodRequest),
               ),
             );
           }),
@@ -280,133 +208,104 @@ class _HomePageState extends State<HomePage> {
                       donorRegister.bloodAmount,
                       context);
                 },
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  color: Colors.red[200],
-                  elevation: 12,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                            leading: FaIcon(
-                              FontAwesomeIcons.user,
-                              color: Colors.grey[100],
-                            ),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  donorRegister.name,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  donorRegister.bloodGroup,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  donorRegister.address,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ],
-                            )),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            TextButton(
-                              child: const Text(
-                                'Reach out to donor',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              onPressed: () {},
-                            ),
-                            const SizedBox(width: 8),
-                            TextButton(
-                              child: const Text(
-                                'Location',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                child: DonorRegistrationCard(donorRegister: donorRegister),
               ),
             );
           }),
     ];
-    return Scaffold(
-      appBar: AppBar(
-        title: !isSearching
-            ? Text(
-                'BloodSource',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              )
-            : TextField(
-                onChanged: (value) {
-                  _filterPerson(value);
-                },
-                decoration: InputDecoration(
-                    hintText: "Search ",
-                    hintStyle: TextStyle(color: Colors.white),
-                    icon: Icon(Icons.search,
-                        color: Theme.of(context).primaryColor)),
-              ),
-        actions: [
-          isSearching
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isSearching = false;
-                      filteredReqData = _bloodRequest;
-                      filteredDonorData = _donorRegister;
-                    });
-                  },
-                  icon: Icon(Icons.cancel),
+    return WillPopScope(
+      onWillPop: () async {
+        if (isDialOpen.value) {
+          isDialOpen.value = false;
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: !isSearching
+              ? Text(
+                  'BloodSource',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
                 )
-              : IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isSearching = true;
-                    });
+              : TextField(
+                  onChanged: (value) {
+                    _filterPerson(value);
                   },
-                  icon: Icon(Icons.search),
-                )
-        ],
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        elevation: 0,
-        backgroundColor: Colors.grey[50],
-      ),
-      drawer: NavigationDrawer(),
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.exclamationCircle),
-            label: 'Blood Request',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.list),
-            label: 'Donors List',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.red[800],
-        onTap: _onItemTapped,
+                  decoration: InputDecoration(
+                      hintText: "Search ",
+                      hintStyle: TextStyle(color: Colors.white),
+                      icon: Icon(Icons.search,
+                          color: Theme.of(context).primaryColor)),
+                ),
+          actions: [
+            isSearching
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isSearching = false;
+                        filteredReqData = _bloodRequest;
+                        filteredDonorData = _donorRegister;
+                      });
+                    },
+                    icon: Icon(Icons.cancel),
+                  )
+                : IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isSearching = true;
+                      });
+                    },
+                    icon: Icon(Icons.search),
+                  )
+          ],
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+          elevation: 0,
+          backgroundColor: Colors.grey[50],
+        ),
+        drawer: NavigationDrawer(),
+        body: _widgetOptions.elementAt(_selectedIndex),
+        floatingActionButton: SpeedDial(
+          animatedIcon: AnimatedIcons.menu_close,
+          backgroundColor: Colors.red,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.4,
+          openCloseDial: isDialOpen,
+          children: [
+            SpeedDialChild(
+                child: Icon(Icons.add),
+                backgroundColor: Colors.red[300],
+                label: 'Request blood',
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => RequestBlood()));
+                }),
+            SpeedDialChild(
+                child: Icon(Icons.add),
+                backgroundColor: Colors.red[300],
+                label: 'Register as donor',
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => DonatePage()));
+                }),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.exclamationCircle),
+              label: 'Blood Request',
+            ),
+            BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.list),
+              label: 'Donors List',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.red[800],
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

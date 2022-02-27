@@ -5,7 +5,7 @@
 5    android:versionName="1.0.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="16"
+8        android:minSdkVersion="21"
 9        android:targetSdkVersion="30" />
 10    <!--
 11         Flutter needs it to communicate with the running application
@@ -14,105 +14,159 @@
 14    <uses-permission android:name="android.permission.INTERNET" />
 14-->D:\fyp_bbms\android\app\src\debug\AndroidManifest.xml:6:5-66
 14-->D:\fyp_bbms\android\app\src\debug\AndroidManifest.xml:6:22-64
-15
-16    <application
-16-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:2:2-29:16
-17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.3.1] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9d2ac2ae8a44d697ec01e22fb5b300b2\core-1.3.1\AndroidManifest.xml:24:18-86
-18        android:debuggable="true"
-19        android:icon="@mipmap/ic_launcher"
-19-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:2:40-74
-20        android:label="fyp_bbms" >
-20-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:2:15-39
-21        <activity
-21-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:3-23:14
-22            android:name="com.example.fyp_bbms.MainActivity"
-22-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:13-41
-23            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-23-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:108-258
-24            android:hardwareAccelerated="true"
-24-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:259-293
-25            android:launchMode="singleTop"
-25-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:42-72
-26            android:theme="@style/LaunchTheme"
-26-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:73-107
-27            android:windowSoftInputMode="adjustResize" >
-27-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:294-336
-28
-29            <!--
-30			Specifies an Android theme to apply to this Activity as soon as
-31			the Android process has started. This theme is visible to the user
-32			while the Flutter UI initializes. After that, this theme continues
-33			to determine the Window background behind the Flutter UI.
-34            -->
-35            <meta-data
-35-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:10:4-111
-36                android:name="io.flutter.embedding.android.NormalTheme"
-36-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:10:15-70
-37                android:resource="@style/NormalTheme" />
-37-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:10:71-108
-38            <!--
-39			Displays an Android View that continues showing the launch screen
-40			Drawable until Flutter paints its first frame, then this splash
-41			screen fades out. A splash screen is useful to avoid any visual
-42			gap between the end of Android's launch screen and the painting of
-43			Flutter's first frame.
-44            -->
-45            <meta-data
-45-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:18:4-129
-46                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-46-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:18:15-79
-47                android:resource="@drawable/launch_background" />
-47-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:18:80-126
-48
-49            <intent-filter>
-49-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:19:4-22:20
-50                <action android:name="android.intent.action.MAIN" />
-50-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:20:5-57
-50-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:20:13-54
-51
-52                <category android:name="android.intent.category.LAUNCHER" />
-52-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:21:5-65
-52-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:21:15-62
-53            </intent-filter>
-54        </activity>
-55        <!--
-56		Don't delete the meta-data below.
-57		This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-58        -->
-59        <meta-data
-59-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:28:3-66
-60            android:name="flutterEmbedding"
-60-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:28:14-45
-61            android:value="2" />
-61-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:28:46-63
-62
-63        <provider
-63-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
-64            android:name="dev.fluttercommunity.plus.share.ShareFileProvider"
-64-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-77
-65            android:authorities="com.example.fyp_bbms.flutter.share_provider"
-65-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
-66            android:exported="false"
-66-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
-67            android:grantUriPermissions="true" >
-67-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
-68            <meta-data
-68-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:68
-69                android:name="android.support.FILE_PROVIDER_PATHS"
-69-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
-70                android:resource="@xml/flutter_share_file_paths" />
-70-->[:share_plus] D:\fyp_bbms\build\share_plus\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-65
-71        </provider>
+15    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+15-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
+15-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-78
+16    <uses-permission android:name="android.permission.VIBRATE" />
+16-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-66
+16-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-63
+17    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+17-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-81
+17-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-78
+18    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+18-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-79
+18-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:10:22-76
+19
+20    <application
+20-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:2:2-45:16
+21        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+21-->[androidx.core:core:1.3.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2d583354f560218740c57f6caad9b933\core-1.3.0\AndroidManifest.xml:24:18-86
+22        android:debuggable="true"
+23        android:icon="@mipmap/ic_launcher"
+23-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:2:40-74
+24        android:label="fyp_bbms" >
+24-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:2:15-39
+25        <activity
+25-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:3-39:14
+26            android:name="com.example.fyp_bbms.MainActivity"
+26-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:13-41
+27            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+27-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:108-258
+28            android:hardwareAccelerated="true"
+28-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:259-293
+29            android:launchMode="singleTop"
+29-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:42-72
+30            android:theme="@style/LaunchTheme"
+30-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:73-107
+31            android:windowSoftInputMode="adjustResize" >
+31-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:3:294-336
+32            <meta-data
+32-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:4:4-81
+33                android:name="flutter_deeplinking_enabled"
+33-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:4:15-57
+34                android:value="true" />
+34-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:4:58-78
+35
+36            <intent-filter android:autoVerify="true" >
+36-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:5:4-10:20
+36-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:5:19-44
+37                <action android:name="android.intent.action.VIEW" />
+37-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:6:5-57
+37-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:6:13-54
+38
+39                <category android:name="android.intent.category.DEFAULT" />
+39-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:7:5-64
+39-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:7:15-61
+40                <category android:name="android.intent.category.BROWSABLE" />
+40-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:8:5-66
+40-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:8:15-63
+41
+42                <data
+42-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:9:5-69
+43                    android:host="{your package name}"
+43-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:9:32-66
+44                    android:scheme="kpg" />
+44-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:9:11-31
+45            </intent-filter>
+46            <!--
+47			Specifies an Android theme to apply to this Activity as soon as
+48			the Android process has started. This theme is visible to the user
+49			while the Flutter UI initializes. After that, this theme continues
+50			to determine the Window background behind the Flutter UI.
+51            -->
+52            <!--
+53			<meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+54			<intent-filter android:autoVerify="true">
+55			<action android:name="android.intent.action.VIEW" />
+56			<category android:name="android.intent.category.DEFAULT" />
+57			<category android:name="android.intent.category.BROWSABLE" />
+58			<data android:scheme="kpg" android:host="com.example.fyp_bbms" />
+59			</intent-filter>
+60			<meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme" />
+61            -->
+62            <!--
+63			Displays an Android View that continues showing the launch screen
+64			Drawable until Flutter paints its first frame, then this splash
+65			screen fades out. A splash screen is useful to avoid any visual
+66			gap between the end of Android's launch screen and the painting of
+67			Flutter's first frame.
+68            -->
+69            <meta-data
+69-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:34:4-129
+70                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+70-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:34:15-79
+71                android:resource="@drawable/launch_background" />
+71-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:34:80-126
 72
-73        <activity
-73-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
-74            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-74-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
-75            android:exported="false"
-75-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
-76            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-76-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
-77    </application>
-78
-79</manifest>
+73            <intent-filter>
+73-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:35:4-38:20
+74                <action android:name="android.intent.action.MAIN" />
+74-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:36:5-57
+74-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:36:13-54
+75
+76                <category android:name="android.intent.category.LAUNCHER" />
+76-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:37:5-65
+76-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:37:15-62
+77            </intent-filter>
+78        </activity>
+79        <!--
+80		Don't delete the meta-data below.
+81		This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+82        -->
+83        <meta-data
+83-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:44:3-66
+84            android:name="flutterEmbedding"
+84-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:44:14-45
+85            android:value="2" />
+85-->D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:44:46-63
+86
+87        <receiver
+87-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:13:9-15:40
+88            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+88-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-97
+89            android:exported="false" />
+89-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-37
+90        <receiver
+90-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-25:20
+91            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+91-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-101
+92            android:exported="false" >
+92-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-37
+93            <intent-filter>
+93-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-24:29
+94                <action android:name="android.intent.action.BOOT_COMPLETED" />
+94-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:20:17-79
+94-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:20:25-76
+95                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+95-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:21:17-84
+95-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:21:25-81
+96                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+96-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:22:17-82
+96-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:22:25-79
+97                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+97-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:23:17-82
+97-->[:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:23:25-79
+98            </intent-filter>
+99        </receiver>
+100
+101        <activity
+101-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+102            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+102-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+103            android:exported="false"
+103-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+104            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+104-->[:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+105    </application>
+106
+107</manifest>

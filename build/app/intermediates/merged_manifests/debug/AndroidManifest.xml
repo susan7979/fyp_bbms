@@ -5,13 +5,17 @@
     android:versionName="1.0.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="21"
         android:targetSdkVersion="30" />
     <!--
          Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -25,16 +29,36 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize" >
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
 
+            <intent-filter android:autoVerify="true" >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="{your package name}"
+                    android:scheme="kpg" />
+            </intent-filter>
             <!--
 			Specifies an Android theme to apply to this Activity as soon as
 			the Android process has started. This theme is visible to the user
 			while the Flutter UI initializes. After that, this theme continues
 			to determine the Window background behind the Flutter UI.
             -->
-            <meta-data
-                android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme" />
+            <!--
+			<meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+			<intent-filter android:autoVerify="true">
+			<action android:name="android.intent.action.VIEW" />
+			<category android:name="android.intent.category.DEFAULT" />
+			<category android:name="android.intent.category.BROWSABLE" />
+			<data android:scheme="kpg" android:host="com.example.fyp_bbms" />
+			</intent-filter>
+			<meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme" />
+            -->
             <!--
 			Displays an Android View that continues showing the launch screen
 			Drawable until Flutter paints its first frame, then this splash
@@ -60,15 +84,19 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <provider
-            android:name="dev.fluttercommunity.plus.share.ShareFileProvider"
-            android:authorities="com.example.fyp_bbms.flutter.share_provider"
-            android:exported="false"
-            android:grantUriPermissions="true" >
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/flutter_share_file_paths" />
-        </provider>
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name="io.flutter.plugins.urllauncher.WebViewActivity"

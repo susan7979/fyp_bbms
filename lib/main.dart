@@ -1,6 +1,9 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp_bbms/login.dart';
-import 'package:fyp_bbms/register.dart';
+import 'package:fyp_bbms/auth/login.dart';
+import 'package:fyp_bbms/auth/register.dart';
+import 'package:fyp_bbms/home.dart';
+import 'package:fyp_bbms/misc/custom_splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,12 +16,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'BBSM',
       initialRoute: '/',
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: MyHomePage(),
+      home: AnimatedSplashScreen(
+          splash: Image.asset('assets/images/launch_image.png'),
+          duration: 3000,
+          splashTransition: SplashTransition.fadeTransition,
+          backgroundColor: Colors.red,
+          nextScreen: HomePage()),
       onGenerateRoute: (settings) {},
       routes: {
         Login.routeName: (context) => Login(),
@@ -56,11 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      "Automatic identity verification which enables you to verify your identity",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey[700], fontSize: 15),
-                    ),
                   ],
                 ),
                 Container(
@@ -78,8 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Login()));
                       },
+                      color: Colors.redAccent,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(50)),
                       child: Text(
                         "Login",
@@ -92,14 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Container(
                       padding: EdgeInsets.only(top: 3, left: 3),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border(
-                            bottom: BorderSide(color: Colors.black),
-                            top: BorderSide(color: Colors.black),
-                            left: BorderSide(color: Colors.black),
-                            right: BorderSide(color: Colors.black),
-                          )),
                       child: MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
@@ -109,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               MaterialPageRoute(
                                   builder: (context) => Register()));
                         },
-                        color: Colors.yellow,
+                        color: Colors.redAccent,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50)),
