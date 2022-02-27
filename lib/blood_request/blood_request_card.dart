@@ -20,23 +20,23 @@ class BloodRequestCard extends StatefulWidget {
 class _BloodRequestCardState extends State<BloodRequestCard> {
   List _bloodReq = [];
 
-  getBlood() async {
-    var response = await http.get(Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/user_dashboard/request_blood.php"));
-    if (response.statusCode == 200) {
-      setState(() {
-        _bloodReq = json.decode(response.body);
-      });
+  // getBlood() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://192.168.1.79/flutter-login-signup/user_dashboard/request_blood.php"));
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       _bloodReq = json.decode(response.body);
+  //     });
 
-      return _bloodReq;
-    }
-  }
+  //     return _bloodReq;
+  //   }
+  // }
 
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getBlood();
-  }
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getBlood();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +64,10 @@ class _BloodRequestCardState extends State<BloodRequestCard> {
                         widget.bloodRequest.name,
                         style: TextStyle(fontSize: 18),
                       ),
-                      Text(
-                        _bloodReq[index]['post_time'],
-                        style: TextStyle(fontSize: 18),
-                      ),
+                      // Text(
+                      //   _bloodReq[index]['post_time'].toString(),
+                      //   style: TextStyle(fontSize: 18),
+                      // ),
                       const SizedBox(
                         height: 10,
                       ),

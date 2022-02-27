@@ -1,14 +1,17 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp_bbms/blood_request/blood_request_card.dart';
 import 'package:fyp_bbms/blood_request/blood_request_details.dart';
+import 'package:fyp_bbms/donation_campaigns/donation_campaigns_card.dart';
+import 'package:fyp_bbms/donation_campaigns/donation_campaigns_details.dart';
 import 'package:fyp_bbms/donor_registration/donor_registration_card.dart';
 import 'package:fyp_bbms/donor_registration/donor_registration_details.dart';
 import 'package:fyp_bbms/models/blood_request.dart';
 import 'package:fyp_bbms/models/donor_register.dart';
-import 'package:fyp_bbms/nav/donate_blood.dart';
+import 'package:fyp_bbms/models/model_donation_campaigns.dart';
+import 'package:fyp_bbms/nav/post_campaigns.dart';
+import 'package:fyp_bbms/nav/register_donor.dart';
 import 'package:fyp_bbms/nav/navigation_drawer.dart';
 import 'package:fyp_bbms/nav/request_blood.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +26,8 @@ class _HomePageState extends State<HomePage> {
   List<DonorRegister> _donorRegister = [];
   List<BloodRequest> filteredReqData = [];
   List<DonorRegister> filteredDonorData = [];
+  List<DonationCampaigns> filteredCampaignData = [];
+  List<DonationCampaigns> _donationCampaign = [];
   bool _loading = true;
   bool isSearching = false;
   final isDialOpen = ValueNotifier(false);
@@ -65,6 +70,27 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<List<DonationCampaigns>> getAllCampaigns() async {
+    try {
+      var response = await http.get(Uri.parse(
+          "http://192.168.1.79/flutter-login-signup/donation_campaigns.php"));
+      if (response.statusCode == 200) {
+        final List<DonationCampaigns> _donationCampaings =
+            donationCampaignsFromJson(response.body);
+        return _donationCampaings;
+      } else {
+        return <DonationCampaigns>[];
+      }
+    } catch (e) {
+      return <DonationCampaigns>[];
+    }
+    // setState(() {
+    //   _bloodRequest = json.decode(response.body);
+    // });
+    // // print(_bloodRequest);
+    // return _bloodRequest;
+  }
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -92,6 +118,12 @@ class _HomePageState extends State<HomePage> {
         _loading = false;
       });
     });
+    getAllCampaigns().then((donationCampaign) {
+      setState(() {
+        _donationCampaign = filteredCampaignData = donationCampaign;
+        _loading = false;
+      });
+    });
   }
 
   void _filterPerson(value) {
@@ -103,6 +135,10 @@ class _HomePageState extends State<HomePage> {
       filteredDonorData = _donorRegister
           .where((element) =>
               element.bloodGroup.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      filteredCampaignData = _donationCampaign
+          .where((element) =>
+              element.hostName.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
   }
@@ -161,6 +197,20 @@ class _HomePageState extends State<HomePage> {
                 )));
   }
 
+  getCampaignsDetails(String hostName, String campaignLocation, String email,
+      String phoneNumber, String campaignDescription, BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DonationCampaignsDetails(
+                  hostName: hostName,
+                  campaignLocation: campaignLocation,
+                  email: email,
+                  phoneNumber: phoneNumber,
+                  campaignDescription: campaignDescription,
+                )));
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
@@ -209,6 +259,28 @@ class _HomePageState extends State<HomePage> {
                       context);
                 },
                 child: DonorRegistrationCard(donorRegister: donorRegister),
+              ),
+            );
+          }),
+      ListView.builder(
+          itemCount:
+              filteredCampaignData.isEmpty ? 0 : filteredCampaignData.length,
+          itemBuilder: (context, index) {
+            DonationCampaigns donationCampaign = filteredCampaignData[index];
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  getCampaignsDetails(
+                      donationCampaign.hostName,
+                      donationCampaign.campaignLocation,
+                      donationCampaign.email,
+                      donationCampaign.phoneNumber,
+                      donationCampaign.campaignDescription,
+                      context);
+                },
+                child:
+                    DonationCampaignsCard(donationCampaign: donationCampaign),
               ),
             );
           }),
@@ -287,7 +359,15 @@ class _HomePageState extends State<HomePage> {
                 label: 'Register as donor',
                 onTap: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => DonatePage()));
+                      MaterialPageRoute(builder: (context) => RegisterDonor()));
+                }),
+            SpeedDialChild(
+                child: Icon(Icons.add),
+                backgroundColor: Colors.red[300],
+                label: 'Create a donation campaign',
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PostCampaigns()));
                 }),
           ],
         ),
@@ -300,6 +380,10 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.list),
               label: 'Donors List',
+            ),
+            BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.hospital),
+              label: 'Donation Campaigns',
             ),
           ],
           currentIndex: _selectedIndex,

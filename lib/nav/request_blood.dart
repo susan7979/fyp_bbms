@@ -30,21 +30,7 @@ class _RequestBloodState extends State<RequestBlood> {
   //     Navigator.of(context).push(MaterialPageRoute(
   //       builder: (context) => HomePage(),
   //     ));
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _name.dispose();
-    _gender.dispose();
-    _age.dispose();
-    _hospitalName.dispose();
-    _hospitalName.dispose();
-    _email.dispose();
-    _phoneNumber.dispose();
-    _bloodGroup.dispose();
-    _bloodAmount.dispose();
-    _reason.dispose();
-  }
+  //
 
   final TextEditingController _name = TextEditingController();
   final TextEditingController _gender = TextEditingController();
@@ -60,7 +46,7 @@ class _RequestBloodState extends State<RequestBlood> {
 
   Future requestBlood() async {
     var url = Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/user_dashboard/request_blood.php");
+        "http://192.168.1.79/flutter-login-signup/user_dashboard/post_request_blood.php");
     var response = await http.post(url, body: {
       "name": _name.text,
       "gender": _gender.text,
