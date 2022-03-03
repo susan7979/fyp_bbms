@@ -482,7 +482,7 @@ class _RegisterState extends State<Register> {
                   Icons.vpn_key,
                   color: Colors.red,
                 ),
-                hintText: "Enter Password",
+                hintText: "Re-Enter Password",
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
               ),

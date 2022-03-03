@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp_bbms/home.dart';
+import 'package:fyp_bbms/main.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
-import 'package:fyp_bbms/misc/notification_api.dart';
+// import 'package:fyp_bbms/misc/notification_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class PostCampaigns extends StatefulWidget {
   const PostCampaigns({Key? key}) : super(key: key);
@@ -30,12 +33,28 @@ class _PostCampaignsState extends State<PostCampaigns> {
   //       builder: (context) => HomePage(),
   //     ));
   //
+  void showNotification() {
+    flutterLocalNotificationsPlugin.show(
+        1,
+        "New campaign soon!",
+        "There is a campaign being host at ${_campaignLocation.text}",
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          importance: Importance.high,
+          color: Colors.blue,
+          playSound: true,
+          icon: '@mipmap/ic_launcher',
+        )));
+  }
 
   final TextEditingController _hostName = TextEditingController();
   final TextEditingController _campaignLocation = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _campaignDescription = TextEditingController();
+  final TextEditingController _campaignDate = TextEditingController();
 
   Future postCampaigns() async {
     var url = Uri.parse(
@@ -46,6 +65,7 @@ class _PostCampaignsState extends State<PostCampaigns> {
       "email": _email.text,
       "phone_number": _phoneNumber.text,
       "campaign_description": _campaignDescription.text,
+      "campaign_date": _campaignDate.text,
     });
     var data = await json.decode(response.body);
     print(data);
@@ -100,6 +120,14 @@ class _PostCampaignsState extends State<PostCampaigns> {
                 labelText: "Campaign Location"),
           ),
           TextFormField(
+            controller: _campaignDate,
+            decoration: const InputDecoration(
+                // contentPadding: EdgeInsets.all(8),
+                icon: Icon(Icons.date_range),
+                hintText: 'Campaign Date',
+                labelText: "Campaign Date"),
+          ),
+          TextFormField(
             controller: _email,
             decoration: const InputDecoration(
                 // contentPadding: EdgeInsets.all(8),
@@ -129,11 +157,12 @@ class _PostCampaignsState extends State<PostCampaigns> {
           ElevatedButton(
               onPressed: () {
                 postCampaigns();
-                NotificationApi.showNotification(
-                    title: "New campaign soon!",
-                    body:
-                        "There is a campaign being host at ${_campaignLocation.text}",
-                    payload: 'hi');
+                showNotification();
+                // NotificationApi.showNotification(
+                //     title: "New campaign soon!",
+                //     body:
+                //         "There is a campaign being host at ${_campaignLocation.text}",
+                //     payload: 'hi');
               },
               child: Text('Share campaign'))
         ],

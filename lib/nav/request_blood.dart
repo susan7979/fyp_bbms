@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp_bbms/home.dart';
+import 'package:fyp_bbms/main.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
-import 'package:fyp_bbms/misc/notification_api.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -16,7 +18,6 @@ class RequestBlood extends StatefulWidget {
 }
 
 class _RequestBloodState extends State<RequestBlood> {
-  @override
   // void initState() {
   //   // TODO: implement initState
   //   super.initState();
@@ -32,6 +33,21 @@ class _RequestBloodState extends State<RequestBlood> {
   //       builder: (context) => HomePage(),
   //     ));
   //
+  void showNotification() {
+    flutterLocalNotificationsPlugin.show(
+        1,
+        "Emergency blood request!!",
+        "There is an emergency blood request at ${_hospitalName.text} for ${_bloodGroup.text}",
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          importance: Importance.high,
+          color: Colors.blue,
+          playSound: true,
+          icon: '@mipmap/ic_launcher',
+        )));
+  }
 
   final TextEditingController _name = TextEditingController();
   final TextEditingController _gender = TextEditingController();
@@ -183,11 +199,7 @@ class _RequestBloodState extends State<RequestBlood> {
           ElevatedButton(
               onPressed: () {
                 requestBlood();
-                NotificationApi.showNotification(
-                    title: "Emergency blood request!!",
-                    body:
-                        "There is an emergency blood request at ${_hospitalName.text} for ${_bloodGroup.text}",
-                    payload: 'hi');
+                showNotification();
               },
               child: Text('Request for blood'))
         ],

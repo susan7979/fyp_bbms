@@ -198,14 +198,21 @@ class _HomePageState extends State<HomePage> {
                 )));
   }
 
-  getCampaignsDetails(String hostName, String campaignLocation, String email,
-      String phoneNumber, String campaignDescription, BuildContext context) {
+  getCampaignsDetails(
+      String hostName,
+      String campaignLocation,
+      String campaignDate,
+      String email,
+      String phoneNumber,
+      String campaignDescription,
+      BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => DonationCampaignsDetails(
                   hostName: hostName,
                   campaignLocation: campaignLocation,
+                  campaignDate: campaignDate,
                   email: email,
                   phoneNumber: phoneNumber,
                   campaignDescription: campaignDescription,
@@ -276,6 +283,7 @@ class _HomePageState extends State<HomePage> {
                   getCampaignsDetails(
                       donationCampaign.hostName,
                       donationCampaign.campaignLocation,
+                      donationCampaign.campaignDate,
                       donationCampaign.email,
                       donationCampaign.phoneNumber,
                       donationCampaign.campaignDescription,

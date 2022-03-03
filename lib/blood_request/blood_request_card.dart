@@ -18,25 +18,6 @@ class BloodRequestCard extends StatefulWidget {
 }
 
 class _BloodRequestCardState extends State<BloodRequestCard> {
-  List _bloodReq = [];
-
-  // getBlood() async {
-  //   var response = await http.get(Uri.parse(
-  //       "http://192.168.1.79/flutter-login-signup/user_dashboard/request_blood.php"));
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       _bloodReq = json.decode(response.body);
-  //     });
-
-  //     return _bloodReq;
-  //   }
-  // }
-
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   getBlood();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -84,17 +65,19 @@ class _BloodRequestCardState extends State<BloodRequestCard> {
                     widget.bloodRequest.phoneNumber,
                     style: TextStyle(fontSize: 18),
                   ),
-                  Text(
-                    widget.bloodRequest.postTime,
-                    style: TextStyle(fontSize: 18),
-                  ),
                 ],
               ),
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  widget.bloodRequest.postTime,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Tap to see more..."),

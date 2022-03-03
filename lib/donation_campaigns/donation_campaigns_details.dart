@@ -8,6 +8,7 @@ class DonationCampaignsDetails extends StatelessWidget {
     Key? key,
     required this.hostName,
     required this.campaignLocation,
+    required this.campaignDate,
     required this.email,
     required this.phoneNumber,
     required this.campaignDescription,
@@ -15,6 +16,7 @@ class DonationCampaignsDetails extends StatelessWidget {
   final String hostName;
 
   final String campaignLocation;
+  final String campaignDate;
   final String email;
   final String phoneNumber;
   final String campaignDescription;
@@ -40,9 +42,9 @@ class DonationCampaignsDetails extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => KhaltiPaymentApp(),
-                ));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => KhaltiPaymentApp(),
+                // ));
               },
             ),
             body: Container(
@@ -107,6 +109,7 @@ class DonationCampaignsDetails extends StatelessWidget {
                                 style: TextStyle(fontSize: 30),
                               ),
                               Text("Campaign Location: $campaignLocation"),
+                              Text("Campaign Date: $campaignDate"),
                             ],
                           ),
                         )
@@ -186,7 +189,7 @@ class DonationCampaignsDetails extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          "Reason for blood Request",
+                          "Campaign description",
                           style: TextStyle(fontSize: 24, color: Colors.red),
                         ),
                       ),

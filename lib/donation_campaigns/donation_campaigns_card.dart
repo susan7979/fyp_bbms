@@ -52,7 +52,7 @@ class DonationCampaignsCard extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      donationCampaign.phoneNumber,
+                      donationCampaign.campaignDate,
                       style: TextStyle(fontSize: 18),
                     ),
                   ],

@@ -11,6 +11,7 @@ class DonationCampaigns {
   DonationCampaigns({
     required this.hostName,
     required this.campaignLocation,
+    required this.campaignDate,
     required this.email,
     required this.phoneNumber,
     required this.campaignDescription,
@@ -18,6 +19,7 @@ class DonationCampaigns {
 
   String hostName;
   String campaignLocation;
+  String campaignDate;
   String email;
   String phoneNumber;
   String campaignDescription;
@@ -26,6 +28,7 @@ class DonationCampaigns {
       DonationCampaigns(
         hostName: json["host_name"],
         campaignLocation: json["campaign_location"],
+        campaignDate: json["campaign_date"],
         email: json["email"],
         phoneNumber: json["phone_number"],
         campaignDescription: json["campaign_description"],
@@ -34,6 +37,7 @@ class DonationCampaigns {
   Map<String, dynamic> toJson() => {
         "host_name": hostName,
         "campaign_location": campaignLocation,
+        "campaign_date": campaignDate,
         "email": email,
         "phone_number": phoneNumber,
         "campaign_description": campaignDescription,
