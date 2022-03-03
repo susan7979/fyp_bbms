@@ -26,8 +26,9 @@ class DonationCampaignsCard extends StatelessWidget {
           children: <Widget>[
             ListTile(
                 leading: FaIcon(
-                  FontAwesomeIcons.user,
-                  color: Colors.grey[100],
+                  FontAwesomeIcons.hospital,
+                  color: Colors.red,
+                  size: 40,
                 ),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,6 +36,10 @@ class DonationCampaignsCard extends StatelessWidget {
                     Text(
                       donationCampaign.hostName,
                       style: TextStyle(fontSize: 18),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      thickness: 1,
                     ),
                     const SizedBox(
                       height: 10,
@@ -62,15 +67,11 @@ class DonationCampaignsCard extends StatelessWidget {
                 //   ),
                 //   onPressed: () {},
                 // ),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text(
-                    'Location',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Tap to see more..."),
+                )
               ],
             ),
           ],

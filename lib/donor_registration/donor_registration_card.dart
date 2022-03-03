@@ -16,64 +16,55 @@ class DonorRegistrationCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: Colors.red[200],
       elevation: 12,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-                leading: FaIcon(
-                  FontAwesomeIcons.user,
-                  color: Colors.grey[100],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+              leading: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.red,
+                child: Text(
+                  donorRegister.bloodGroup,
+                  style: TextStyle(fontSize: 16),
                 ),
-                title: Column(
+              ),
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       donorRegister.name,
-                      style: TextStyle(fontSize: 18),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(
-                      height: 10,
+                    Divider(
+                      color: Colors.black,
+                      thickness: 1,
                     ),
                     Text(
                       donorRegister.bloodGroup,
                       style: TextStyle(fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 10,
                     ),
                     Text(
                       donorRegister.address,
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
-                )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  child: const Text(
-                    'Reach out to donor',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  onPressed: () {},
                 ),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text(
-                    'Location',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
-              ],
-            ),
-          ],
-        ),
+              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Tap to see more"),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

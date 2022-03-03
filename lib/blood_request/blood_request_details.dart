@@ -17,6 +17,7 @@ class BloodRequestDetails extends StatelessWidget {
   final String bloodGroup;
   final String bloodAmount;
   final String reason;
+  final String postTime;
 
   BloodRequestDetails({
     Key? key,
@@ -30,6 +31,7 @@ class BloodRequestDetails extends StatelessWidget {
     required this.bloodGroup,
     required this.bloodAmount,
     required this.reason,
+    required this.postTime,
   }) : super(key: key);
 
   @override

@@ -6,6 +6,7 @@ import 'package:fyp_bbms/home.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/misc/notification_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class RequestBlood extends StatefulWidget {
   const RequestBlood({Key? key}) : super(key: key);
@@ -42,7 +43,7 @@ class _RequestBloodState extends State<RequestBlood> {
   final TextEditingController _bloodGroup = TextEditingController();
   final TextEditingController _bloodAmount = TextEditingController();
   final TextEditingController _reason = TextEditingController();
-  final String _postTime = DateTime.now().toString();
+  final String _postTime = DateFormat.yMEd().add_jms().format(DateTime.now());
 
   Future requestBlood() async {
     var url = Uri.parse(

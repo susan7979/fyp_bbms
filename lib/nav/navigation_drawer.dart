@@ -5,6 +5,7 @@ import 'package:fyp_bbms/main.dart';
 import 'package:fyp_bbms/nav/nearby_organizations.dart';
 import 'package:fyp_bbms/nav/post_campaigns.dart';
 import 'package:fyp_bbms/nav/request_blood.dart';
+import 'package:fyp_bbms/nav/update_date.dart';
 
 import 'about_me.dart';
 import 'register_donor.dart';
@@ -46,33 +47,41 @@ class NavigationDrawer extends StatelessWidget {
               height: 48,
             ),
             buildMenuItem(
+                text: 'Update donated date',
+                icon: Icons.logout,
+                onClicked: () => selectedItem(context, 3)),
+            const SizedBox(
+              height: 48,
+            ),
+            buildMenuItem(
                 text: 'Nearby Organizations',
                 icon: Icons.local_hospital,
-                onClicked: () => selectedItem(context, 3)),
+                onClicked: () => selectedItem(context, 4)),
             const SizedBox(
               height: 48,
             ),
             buildMenuItem(
                 text: 'Create Donation Campaign',
                 icon: Icons.campaign,
-                onClicked: () => selectedItem(context, 4)),
+                onClicked: () => selectedItem(context, 5)),
             const SizedBox(
               height: 48,
             ),
             buildMenuItem(
                 text: 'About me',
                 icon: Icons.shield,
-                onClicked: () => selectedItem(context, 5)),
+                onClicked: () => selectedItem(context, 6)),
             const SizedBox(
               height: 48,
             ),
             buildMenuItem(
                 text: 'Logout',
                 icon: Icons.logout,
-                onClicked: () => selectedItem(context, 6)),
+                onClicked: () => selectedItem(context, 7)),
             const SizedBox(
               height: 48,
             ),
+
             // const Divider(color: Colors.white70),
             // const Text(
             //   'Blood Groups',
@@ -185,21 +194,27 @@ class NavigationDrawer extends StatelessWidget {
         break;
       case 3:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => NearbyOrganization(),
+          builder: (context) => UpdateDate(),
         ));
         break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PostCampaigns(),
+          builder: (context) => NearbyOrganization(),
         ));
         break;
 
       case 5:
         Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PostCampaigns(),
+        ));
+        break;
+
+      case 6:
+        Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AboutMe(),
         ));
         break;
-      case 6:
+      case 7:
         Navigator.of(context).pop();
         Navigator.of(context).pop();
 

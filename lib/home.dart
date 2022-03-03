@@ -154,22 +154,23 @@ class _HomePageState extends State<HomePage> {
       String bloodGroup,
       String bloodAmount,
       String reason,
+      String postTime,
       BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => BloodRequestDetails(
-                  name: name,
-                  gender: gender,
-                  age: age,
-                  hospitalName: hospitalName,
-                  hospitalAddress: hospitalAddress,
-                  email: email,
-                  phoneNumber: phoneNumber,
-                  bloodGroup: bloodGroup,
-                  bloodAmount: bloodAmount,
-                  reason: reason,
-                )));
+                name: name,
+                gender: gender,
+                age: age,
+                hospitalName: hospitalName,
+                hospitalAddress: hospitalAddress,
+                email: email,
+                phoneNumber: phoneNumber,
+                bloodGroup: bloodGroup,
+                bloodAmount: bloodAmount,
+                reason: reason,
+                postTime: postTime)));
   }
 
   getDonorDetails(
@@ -233,6 +234,7 @@ class _HomePageState extends State<HomePage> {
                       bloodRequest.bloodGroup,
                       bloodRequest.bloodAmount,
                       bloodRequest.reason,
+                      bloodRequest.postTime,
                       context);
                 },
                 child: BloodRequestCard(bloodRequest: bloodRequest),
