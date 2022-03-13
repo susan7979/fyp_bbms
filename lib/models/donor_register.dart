@@ -18,7 +18,6 @@ class DonorRegister {
     required this.email,
     required this.phoneNumber,
     required this.bloodGroup,
-    required this.bloodAmount,
   });
 
   String name;
@@ -28,7 +27,6 @@ class DonorRegister {
   String email;
   String phoneNumber;
   String bloodGroup;
-  String bloodAmount;
 
   factory DonorRegister.fromJson(Map<String, dynamic> json) => DonorRegister(
         name: json["name"],
@@ -38,7 +36,6 @@ class DonorRegister {
         email: json["email"],
         phoneNumber: json["phone_number"],
         bloodGroup: json["blood_group"],
-        bloodAmount: json["blood_amount"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,6 +46,5 @@ class DonorRegister {
         "email": email,
         "phone_number": phoneNumber,
         "blood_group": bloodGroup,
-        "blood_amount": bloodAmount,
       };
 }

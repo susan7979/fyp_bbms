@@ -1,28 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
+import 'package:fyp_bbms/models/donor_register.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DonorRegistrationDetails extends StatelessWidget {
-  final String name;
-  final String gender;
-  final String age;
-  final String address;
-  final String email;
-  final String phoneNumber;
-  final String bloodGroup;
-  final String bloodAmount;
+  final DonorRegister donorRegister;
 
-  const DonorRegistrationDetails({
-    Key? key,
-    required this.name,
-    required this.gender,
-    required this.age,
-    required this.address,
-    required this.email,
-    required this.phoneNumber,
-    required this.bloodGroup,
-    required this.bloodAmount,
-  }) : super(key: key);
+  const DonorRegistrationDetails({Key? key, required this.donorRegister})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -138,14 +123,14 @@ class DonorRegistrationDetails extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                name,
+                                donorRegister.name,
                                 style: TextStyle(fontSize: 30),
                               ),
-                              Text("Age: $age"),
-                              Text("Gender: $gender"),
-                              Text("Address: $address"),
-                              Text("Blood Group: $bloodGroup"),
-                              Text("Blood AmountRequired: $bloodAmount"),
+                              Text("Age: ${donorRegister.age}"),
+                              Text("Gender: ${donorRegister.gender}"),
+                              Text("Address: ${donorRegister.address}"),
+                              Text("Blood Group: ${donorRegister.bloodGroup}"),
+                              // Text("Blood AmountRequired: $bloodAmount"),
                             ],
                           ),
                         )
@@ -169,7 +154,7 @@ class DonorRegistrationDetails extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('mailto:$email');
+                                launch('mailto:${donorRegister.email}');
                               },
                               child: Icon(
                                 Icons.mail,
@@ -188,7 +173,7 @@ class DonorRegistrationDetails extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('tel:$phoneNumber');
+                                launch('tel:${donorRegister.phoneNumber}');
                               },
                               child: Icon(
                                 Icons.phone,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp_bbms/auth/login.dart';
+import 'package:fyp_bbms/api.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
@@ -24,8 +25,7 @@ class _RegisterState extends State<Register> {
   String verifyLink = '';
 
   Future register() async {
-    var url =
-        Uri.parse("http://192.168.1.79/flutter-login-signup/register.php");
+    var url = Uri.parse(registerUrl);
     var response = await http.post(url, body: {
       "username": _user.text,
       "password": _pass.text,

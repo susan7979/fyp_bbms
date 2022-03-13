@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/home.dart';
 import 'package:fyp_bbms/main.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
@@ -60,10 +61,11 @@ class _RequestBloodState extends State<RequestBlood> {
   final TextEditingController _bloodAmount = TextEditingController();
   final TextEditingController _reason = TextEditingController();
   final String _postTime = DateFormat.yMEd().add_jms().format(DateTime.now());
+  final bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+  String? value;
 
   Future requestBlood() async {
-    var url = Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/user_dashboard/post_request_blood.php");
+    var url = Uri.parse(postBloodRequestUrl);
     var response = await http.post(url, body: {
       "name": _name.text,
       "gender": _gender.text,
@@ -114,6 +116,7 @@ class _RequestBloodState extends State<RequestBlood> {
         padding: EdgeInsets.all(16),
         children: [
           TextFormField(
+            textCapitalization: TextCapitalization.words,
             controller: _name,
             decoration: const InputDecoration(
                 // contentPadding: EdgeInsets.all(8),
@@ -169,13 +172,40 @@ class _RequestBloodState extends State<RequestBlood> {
                 hintText: 'Enter your phone number',
                 labelText: "Phone Number"),
           ),
-          TextFormField(
-            controller: _bloodGroup,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.bloodtype_rounded),
-                hintText: 'Enter your blood group',
-                labelText: "Blood Group"),
+          // TextFormField(
+          //   controller: _bloodGroup,
+          //   decoration: const InputDecoration(
+          //       // contentPadding: EdgeInsets.all(8),
+          //       icon: Icon(Icons.bloodtype_rounded),
+          //       hintText: 'Enter your blood group',
+          //       labelText: "Blood Group"),
+          // ),
+          SizedBox(
+            height: 10,
+          ),
+          Text("Blood Group"),
+          SizedBox(
+            width: 20,
+          ),
+          Center(
+            child: Container(
+              width: 300,
+              // padding: EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(12)),
+              child: DropdownButton<String>(
+                value: value,
+                borderRadius: BorderRadius.circular(10),
+                dropdownColor: Colors.red,
+                elevation: 20,
+                isExpanded: true,
+                items: bloodGroups.map(buildBloodGroupItem).toList(),
+                onChanged: (value) => setState(() {
+                  this.value = value;
+                }),
+              ),
+            ),
           ),
           TextFormField(
             controller: _bloodAmount,
@@ -196,14 +226,47 @@ class _RequestBloodState extends State<RequestBlood> {
           const SizedBox(
             height: 40,
           ),
-          ElevatedButton(
-              onPressed: () {
-                requestBlood();
-                showNotification();
-              },
-              child: Text('Request for blood'))
+          // ElevatedButton(onPressed: () {}, child: Text('Request for blood')),
+          GestureDetector(
+            onTap: () {
+              requestBlood();
+              showNotification();
+            },
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                left: 20,
+                right: 20,
+              ),
+              padding: EdgeInsets.only(left: 20, right: 20),
+              height: 54,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.red, Colors.redAccent],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight),
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.grey[200],
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 50,
+                      color: Color(0xffEEEEEE)),
+                ],
+              ),
+              child: Text(
+                "Request for blood",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
+DropdownMenuItem<String> buildBloodGroupItem(String item) => DropdownMenuItem(
+      value: item,
+      child: Text(item),
+    );

@@ -13,8 +13,8 @@ class DonorRegistrationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.red[300],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: Colors.red[200],
       elevation: 12,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -22,7 +22,12 @@ class DonorRegistrationCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-              leading: CircleAvatar(
+            leading: Container(
+              padding: EdgeInsets.only(right: 12.0),
+              decoration: BoxDecoration(
+                  border: Border(
+                      right: BorderSide(width: 1.0, color: Colors.white24))),
+              child: CircleAvatar(
                 radius: 40,
                 backgroundColor: Colors.red,
                 child: Text(
@@ -30,8 +35,11 @@ class DonorRegistrationCard extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-              title: Padding(
-                padding: const EdgeInsets.all(8.0),
+            ),
+            title: Container(
+              decoration: BoxDecoration(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -40,28 +48,45 @@ class DonorRegistrationCard extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    Divider(
-                      color: Colors.black,
-                      thickness: 1,
+                    // Divider(
+                    //   color: Colors.black,
+                    //   thickness: 1,
+                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          donorRegister.address,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Colors.white70,
+                        ),
+                      ],
                     ),
                     Text(
-                      donorRegister.bloodGroup,
+                      donorRegister.age,
                       style: TextStyle(fontSize: 18),
                     ),
-                    Text(
-                      donorRegister.address,
-                      style: TextStyle(fontSize: 18),
-                    ),
+                    // Text(
+                    //   widget.bloodRequest.phoneNumber,
+                    //   style: TextStyle(fontSize: 18),
+                    // ),
                   ],
                 ),
-              )),
+              ),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Tap to see more"),
-              ),
+                child: Text("Tap to see more..."),
+              )
             ],
           ),
         ],

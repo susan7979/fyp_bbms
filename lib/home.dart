@@ -7,14 +7,19 @@ import 'package:fyp_bbms/donation_campaigns/donation_campaigns_card.dart';
 import 'package:fyp_bbms/donation_campaigns/donation_campaigns_details.dart';
 import 'package:fyp_bbms/donor_registration/donor_registration_card.dart';
 import 'package:fyp_bbms/donor_registration/donor_registration_details.dart';
+import 'package:fyp_bbms/api.dart';
+import 'package:fyp_bbms/misc/refresh_widget.dart';
 import 'package:fyp_bbms/models/blood_request.dart';
 import 'package:fyp_bbms/models/donor_register.dart';
 import 'package:fyp_bbms/models/model_donation_campaigns.dart';
+// import 'package:fyp_bbms/models/user.dart';
 import 'package:fyp_bbms/nav/post_campaigns.dart';
 import 'package:fyp_bbms/nav/register_donor.dart';
 import 'package:fyp_bbms/nav/navigation_drawer.dart';
 import 'package:fyp_bbms/nav/request_blood.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,7 +27,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<RefreshIndicatorState> keyRefresh =
+      new GlobalKey<RefreshIndicatorState>();
   List<BloodRequest> _bloodRequest = [];
+  List<AuthProvider> _user = [];
   List<DonorRegister> _donorRegister = [];
   List<BloodRequest> filteredReqData = [];
   List<DonorRegister> filteredDonorData = [];
@@ -34,8 +42,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<BloodRequest>> getAllBloodRequest() async {
     try {
-      var response = await http.get(Uri.parse(
-          "http://192.168.1.79/flutter-login-signup/blood_requests.php"));
+      var response = await http.get(Uri.parse(getAllBloodRequestUrl));
       if (response.statusCode == 200) {
         final List<BloodRequest> _bloodRequest =
             bloodRequestFromJson(response.body);
@@ -46,6 +53,7 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       return <BloodRequest>[];
     }
+
     // setState(() {
     //   _bloodRequest = json.decode(response.body);
     // });
@@ -54,9 +62,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<DonorRegister>> getAllDonorRegister() async {
+    await Future.delayed(Duration(milliseconds: 400));
     try {
-      var response = await http.get(Uri.parse(
-          "http://192.168.1.79/flutter-login-signup/donor_register.php"));
+      var response = await http.get(Uri.parse(getAllDonorUrl));
       if (response.statusCode == 200) {
         final List<DonorRegister> _donorRegister =
             donorRegisterFromJson(response.body);
@@ -70,10 +78,27 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // Future<List<User>> getUser() async {
+  //   await Future.delayed(Duration(milliseconds: 400));
+  //   try {
+  //     var response = await http.get(Uri.parse(
+  //         "http://192.168.1.79/flutter-login-signup/user_details.php"));
+  //     if (response.statusCode == 200) {
+  //       final List<Users> _user = userFromJson(response.body);
+  //       return _user;
+  //     }
+  //     print(_user);
+  //     // print(_donorReg);
+  //     return <User>[];
+  //   } catch (e) {
+  //     return <User>[];
+  //     // TODO
+  //   }
+  // }
+
   Future<List<DonationCampaigns>> getAllCampaigns() async {
     try {
-      var response = await http.get(Uri.parse(
-          "http://192.168.1.79/flutter-login-signup/donation_campaigns.php"));
+      var response = await http.get(Uri.parse(getAllCampaignsUrl));
       if (response.statusCode == 200) {
         final List<DonationCampaigns> _donationCampaings =
             donationCampaignsFromJson(response.body);
@@ -105,23 +130,23 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loading = true;
+    getAllBloodRequest();
+    getAllDonorRegister();
+    getAllCampaigns();
+
     getAllBloodRequest().then((bloodRequest) {
       setState(() {
         _bloodRequest = filteredReqData = bloodRequest;
-        _loading = false;
       });
     });
     getAllDonorRegister().then((donorRegister) {
       setState(() {
         _donorRegister = filteredDonorData = donorRegister;
-        _loading = false;
       });
     });
     getAllCampaigns().then((donationCampaign) {
       setState(() {
         _donationCampaign = filteredCampaignData = donationCampaign;
-        _loading = false;
       });
     });
   }
@@ -143,157 +168,103 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  getRequesterDetails(
-      String name,
-      String gender,
-      String age,
-      String hospitalName,
-      String hospitalAddress,
-      String email,
-      String phoneNumber,
-      String bloodGroup,
-      String bloodAmount,
-      String reason,
-      String postTime,
-      BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => BloodRequestDetails(
-                name: name,
-                gender: gender,
-                age: age,
-                hospitalName: hospitalName,
-                hospitalAddress: hospitalAddress,
-                email: email,
-                phoneNumber: phoneNumber,
-                bloodGroup: bloodGroup,
-                bloodAmount: bloodAmount,
-                reason: reason,
-                postTime: postTime)));
-  }
-
-  getDonorDetails(
-      String name,
-      String gender,
-      String age,
-      String address,
-      String email,
-      String phoneNumber,
-      String bloodGroup,
-      String bloodAmount,
-      BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DonorRegistrationDetails(
-                  name: name,
-                  gender: gender,
-                  age: age,
-                  address: address,
-                  email: email,
-                  phoneNumber: phoneNumber,
-                  bloodGroup: bloodGroup,
-                  bloodAmount: bloodAmount,
-                )));
-  }
-
-  getCampaignsDetails(
-      String hostName,
-      String campaignLocation,
-      String campaignDate,
-      String email,
-      String phoneNumber,
-      String campaignDescription,
-      BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DonationCampaignsDetails(
-                  hostName: hostName,
-                  campaignLocation: campaignLocation,
-                  campaignDate: campaignDate,
-                  email: email,
-                  phoneNumber: phoneNumber,
-                  campaignDescription: campaignDescription,
-                )));
-  }
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
-      ListView.builder(
-          itemCount: filteredReqData.isEmpty ? 0 : filteredReqData.length,
-          itemBuilder: (context, index) {
-            BloodRequest bloodRequest = filteredReqData[index];
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  getRequesterDetails(
-                      bloodRequest.name,
-                      bloodRequest.gender,
-                      bloodRequest.age,
-                      bloodRequest.hospitalName,
-                      bloodRequest.hospitalAddress,
-                      bloodRequest.email,
-                      bloodRequest.phoneNumber,
-                      bloodRequest.bloodGroup,
-                      bloodRequest.bloodAmount,
-                      bloodRequest.reason,
-                      bloodRequest.postTime,
-                      context);
-                },
-                child: BloodRequestCard(bloodRequest: bloodRequest),
-              ),
-            );
-          }),
-      ListView.builder(
-          itemCount: filteredDonorData.isEmpty ? 0 : filteredDonorData.length,
-          itemBuilder: (context, index) {
-            DonorRegister donorRegister = filteredDonorData[index];
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  getDonorDetails(
-                      donorRegister.name,
-                      donorRegister.gender,
-                      donorRegister.age,
-                      donorRegister.address,
-                      donorRegister.email,
-                      donorRegister.phoneNumber,
-                      donorRegister.bloodGroup,
-                      donorRegister.bloodAmount,
-                      context);
-                },
-                child: DonorRegistrationCard(donorRegister: donorRegister),
-              ),
-            );
-          }),
-      ListView.builder(
-          itemCount:
-              filteredCampaignData.isEmpty ? 0 : filteredCampaignData.length,
-          itemBuilder: (context, index) {
-            DonationCampaigns donationCampaign = filteredCampaignData[index];
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  getCampaignsDetails(
-                      donationCampaign.hostName,
-                      donationCampaign.campaignLocation,
-                      donationCampaign.campaignDate,
-                      donationCampaign.email,
-                      donationCampaign.phoneNumber,
-                      donationCampaign.campaignDescription,
-                      context);
-                },
-                child:
-                    DonationCampaignsCard(donationCampaign: donationCampaign),
-              ),
-            );
-          }),
+      filteredReqData.isEmpty
+          ? Center(
+              child: Text('No matches found'),
+            )
+          : FutureBuilder(
+              future: getAllBloodRequest(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      itemCount:
+                          filteredReqData.isEmpty ? 0 : filteredReqData.length,
+                      itemBuilder: (context, index) {
+                        BloodRequest bloodRequest = filteredReqData[index];
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BloodRequestDetails(
+                                            bloodRequest: bloodRequest,
+                                          )));
+                            },
+                            child: BloodRequestCard(bloodRequest: bloodRequest),
+                          ),
+                        );
+                      });
+                } else {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.red,
+                  ));
+                }
+              },
+            ),
+      filteredDonorData.isEmpty
+          ? Center(
+              child: Text('No matches found'),
+            )
+          : RefreshWidget(
+              onRefresh: getAllDonorRegister,
+              keyRefresh: keyRefresh,
+              child: ListView.builder(
+                  itemCount:
+                      filteredDonorData.isEmpty ? 0 : filteredDonorData.length,
+                  itemBuilder: (context, index) {
+                    DonorRegister donorRegister = filteredDonorData[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DonorRegistrationDetails(
+                                        donorRegister: donorRegister,
+                                      )));
+                        },
+                        child:
+                            DonorRegistrationCard(donorRegister: donorRegister),
+                      ),
+                    );
+                  }),
+            ),
+      filteredCampaignData.isEmpty
+          ? Center(
+              child: Text('No matches found'),
+            )
+          : ListView.builder(
+              itemCount: filteredCampaignData.isEmpty
+                  ? 0
+                  : filteredCampaignData.length,
+              itemBuilder: (context, index) {
+                DonationCampaigns donationCampaign =
+                    filteredCampaignData[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DonationCampaignsDetails(
+                                    donationCampaign: donationCampaign,
+                                  )));
+                    },
+                    child: DonationCampaignsCard(
+                        donationCampaign: donationCampaign),
+                  ),
+                );
+              }),
     ];
     return WillPopScope(
       onWillPop: () async {

@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/misc/khalti_main.dart';
+import 'package:fyp_bbms/models/model_donation_campaigns.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DonationCampaignsDetails extends StatelessWidget {
-  const DonationCampaignsDetails({
-    Key? key,
-    required this.hostName,
-    required this.campaignLocation,
-    required this.campaignDate,
-    required this.email,
-    required this.phoneNumber,
-    required this.campaignDescription,
-  }) : super(key: key);
-  final String hostName;
+  final DonationCampaigns donationCampaign;
 
-  final String campaignLocation;
-  final String campaignDate;
-  final String email;
-  final String phoneNumber;
-  final String campaignDescription;
+  const DonationCampaignsDetails({Key? key, required this.donationCampaign})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +94,13 @@ class DonationCampaignsDetails extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                hostName,
+                                donationCampaign.hostName,
                                 style: TextStyle(fontSize: 30),
                               ),
-                              Text("Campaign Location: $campaignLocation"),
-                              Text("Campaign Date: $campaignDate"),
+                              Text(
+                                  "Campaign Location: ${donationCampaign.campaignLocation}"),
+                              Text(
+                                  "Campaign Date: ${donationCampaign.campaignDate}"),
                             ],
                           ),
                         )
@@ -134,7 +125,7 @@ class DonationCampaignsDetails extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('mailto:$email');
+                                launch('mailto:${donationCampaign.email}');
                               },
                               child: Icon(
                                 Icons.mail,
@@ -153,7 +144,7 @@ class DonationCampaignsDetails extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('tel:$phoneNumber');
+                                launch('tel:${donationCampaign.phoneNumber}');
                               },
                               child: Icon(
                                 Icons.phone,
@@ -201,7 +192,7 @@ class DonationCampaignsDetails extends StatelessWidget {
                   ),
                   Container(
                     height: 200,
-                    child: Text(campaignDescription),
+                    child: Text(donationCampaign.campaignDescription),
                   ),
                   Divider(color: Color(0xFF7b8ea3)),
                   // GestureDetector(

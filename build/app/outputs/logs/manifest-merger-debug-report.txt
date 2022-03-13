@@ -5,13 +5,18 @@ INJECTED from D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:1:1-46:12
 INJECTED from D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:1:1-46:12
 INJECTED from D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:1:1-46:12
 MERGED from D:\fyp_bbms\android\app\src\main\AndroidManifest.xml:1:1-46:12
-MERGED from [:shared_preferences_android] D:\fyp_bbms\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:firebase_messaging] D:\fyp_bbms\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-46:12
 MERGED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-15:12
-MERGED from [:package_info_plus] D:\fyp_bbms\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:google_maps_flutter] D:\fyp_bbms\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:flutter_plugin_android_lifecycle] D:\fyp_bbms\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-28:12
-MERGED from [:fluttertoast] D:\fyp_bbms\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-14:12
+MERGED from [:path_provider_android] D:\fyp_bbms\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences_android] D:\fyp_bbms\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:geocoding] D:\fyp_bbms\build\geocoding\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:package_info_plus] D:\fyp_bbms\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:fluttertoast] D:\fyp_bbms\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:device_info_plus] D:\fyp_bbms\build\device_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.firebase:firebase-analytics:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\e82e7ce1bf9ea2d407d8fd9506d5fc1a\jetified-firebase-analytics-20.1.0\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\0a729947d9f2682586d5957414cbefca\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
@@ -30,6 +35,10 @@ MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\msi\.gr
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\620ef525a74e68563fec041d3225d230\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\ced0efc3d9a68006b6f4e94d9a24d813\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.media:media:1.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\4b82e8f8c069a644353efb8ee65fce15\media-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:17:1-38:12
+MERGED from [com.google.android.gms:play-services-location:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\24ebfe5a43622e59b49a76d64ce4166a\jetified-play-services-location-17.0.0\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:17:1-29:12
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\5cbda2571d98969158a964f138da0ce2\jetified-play-services-places-placereport-17.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9475210b76bdfd49ca44aed29fd92245\jetified-play-services-cloud-messaging-17.0.0\AndroidManifest.xml:2:1-13:12
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2b1e572b3be9ac55cbd2d19d47b6262a\jetified-firebase-iid-interop-17.1.0\AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\1740c60b1ca92f8e77657d0ed37d9c23\jetified-firebase-measurement-connector-19.0.0\AndroidManifest.xml:17:1-25:12
@@ -83,6 +92,8 @@ MERGED from [:firebase_messaging] D:\fyp_bbms\build\firebase_messaging\intermedi
 MERGED from [:firebase_messaging] D:\fyp_bbms\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-44:19
 MERGED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-13:19
 MERGED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-13:19
+MERGED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-15:19
+MERGED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-26:19
 MERGED from [:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-26:19
 MERGED from [:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-12:19
@@ -111,6 +122,14 @@ MERGED from [com.google.android.gms:play-services-measurement-impl:20.1.0] C:\Us
 MERGED from [com.google.android.gms:play-services-measurement-impl:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\bf4f6143abeef051df9c819309adc84e\jetified-play-services-measurement-impl-20.1.0\AndroidManifest.xml:28:5-29:19
 MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\57ea611542694d35688d99e3ac5a4b17\jetified-play-services-stats-17.0.2\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-stats:17.0.2] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\57ea611542694d35688d99e3ac5a4b17\jetified-play-services-stats-17.0.2\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:30:5-36:19
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:30:5-36:19
+MERGED from [com.google.android.gms:play-services-location:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\24ebfe5a43622e59b49a76d64ce4166a\jetified-play-services-location-17.0.0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-location:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\24ebfe5a43622e59b49a76d64ce4166a\jetified-play-services-location-17.0.0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\5cbda2571d98969158a964f138da0ce2\jetified-play-services-places-placereport-17.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\5cbda2571d98969158a964f138da0ce2\jetified-play-services-places-placereport-17.0.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2b1e572b3be9ac55cbd2d19d47b6262a\jetified-firebase-iid-interop-17.1.0\AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2b1e572b3be9ac55cbd2d19d47b6262a\jetified-firebase-iid-interop-17.1.0\AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.firebase:firebase-measurement-connector:19.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\1740c60b1ca92f8e77657d0ed37d9c23\jetified-firebase-measurement-connector-19.0.0\AndroidManifest.xml:22:5-23:19
@@ -205,20 +224,30 @@ uses-sdk
 INJECTED from D:\fyp_bbms\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\fyp_bbms\android\app\src\main\AndroidManifest.xml
 INJECTED from D:\fyp_bbms\android\app\src\main\AndroidManifest.xml
-MERGED from [:shared_preferences_android] D:\fyp_bbms\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:shared_preferences_android] D:\fyp_bbms\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:firebase_messaging] D:\fyp_bbms\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:firebase_messaging] D:\fyp_bbms\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:package_info_plus] D:\fyp_bbms\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:package_info_plus] D:\fyp_bbms\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:google_maps_flutter] D:\fyp_bbms\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:google_maps_flutter] D:\fyp_bbms\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] D:\fyp_bbms\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] D:\fyp_bbms\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:fluttertoast] D:\fyp_bbms\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:fluttertoast] D:\fyp_bbms\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] D:\fyp_bbms\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:path_provider_android] D:\fyp_bbms\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:path_provider_android] D:\fyp_bbms\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_android] D:\fyp_bbms\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_android] D:\fyp_bbms\build\shared_preferences_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geocoding] D:\fyp_bbms\build\geocoding\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geocoding] D:\fyp_bbms\build\geocoding\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:package_info_plus] D:\fyp_bbms\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:package_info_plus] D:\fyp_bbms\build\package_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] D:\fyp_bbms\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] D:\fyp_bbms\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:device_info_plus] D:\fyp_bbms\build\device_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:device_info_plus] D:\fyp_bbms\build\device_info_plus\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-analytics:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\e82e7ce1bf9ea2d407d8fd9506d5fc1a\jetified-firebase-analytics-20.1.0\AndroidManifest.xml:5:5-44
@@ -255,6 +284,14 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\User
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\ced0efc3d9a68006b6f4e94d9a24d813\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.media:media:1.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\4b82e8f8c069a644353efb8ee65fce15\media-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.media:media:1.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\4b82e8f8c069a644353efb8ee65fce15\media-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-location:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\24ebfe5a43622e59b49a76d64ce4166a\jetified-play-services-location-17.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-location:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\24ebfe5a43622e59b49a76d64ce4166a\jetified-play-services-location-17.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\5cbda2571d98969158a964f138da0ce2\jetified-play-services-places-placereport-17.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\5cbda2571d98969158a964f138da0ce2\jetified-play-services-places-placereport-17.0.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9475210b76bdfd49ca44aed29fd92245\jetified-play-services-cloud-messaging-17.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9475210b76bdfd49ca44aed29fd92245\jetified-play-services-cloud-messaging-17.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-iid-interop:17.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2b1e572b3be9ac55cbd2d19d47b6262a\jetified-firebase-iid-interop-17.1.0\AndroidManifest.xml:5:5-44
@@ -337,6 +374,8 @@ MERGED from [com.google.android.gms:play-services-measurement:20.1.0] C:\Users\m
 MERGED from [com.google.android.gms:play-services-measurement:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2ebd54cab4ee7dd679abcaf23b1d9d27\jetified-play-services-measurement-20.1.0\AndroidManifest.xml:23:5-67
 MERGED from [com.google.android.gms:play-services-measurement-impl:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\bf4f6143abeef051df9c819309adc84e\jetified-play-services-measurement-impl-20.1.0\AndroidManifest.xml:23:5-67
 MERGED from [com.google.android.gms:play-services-measurement-impl:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\bf4f6143abeef051df9c819309adc84e\jetified-play-services-measurement-impl-20.1.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:24:5-67
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:24:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9475210b76bdfd49ca44aed29fd92245\jetified-play-services-cloud-messaging-17.0.0\AndroidManifest.xml:8:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9475210b76bdfd49ca44aed29fd92245\jetified-play-services-cloud-messaging-17.0.0\AndroidManifest.xml:8:5-67
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\a5d8fa11b6db0a2661c00be503af6e67\jetified-play-services-measurement-sdk-api-20.1.0\AndroidManifest.xml:23:5-67
@@ -373,6 +412,8 @@ MERGED from [com.google.android.gms:play-services-measurement:20.1.0] C:\Users\m
 MERGED from [com.google.android.gms:play-services-measurement:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2ebd54cab4ee7dd679abcaf23b1d9d27\jetified-play-services-measurement-20.1.0\AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.gms:play-services-measurement-impl:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\bf4f6143abeef051df9c819309adc84e\jetified-play-services-measurement-impl-20.1.0\AndroidManifest.xml:24:5-79
 MERGED from [com.google.android.gms:play-services-measurement-impl:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\bf4f6143abeef051df9c819309adc84e\jetified-play-services-measurement-impl-20.1.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:23:5-79
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9475210b76bdfd49ca44aed29fd92245\jetified-play-services-cloud-messaging-17.0.0\AndroidManifest.xml:7:5-79
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\9475210b76bdfd49ca44aed29fd92245\jetified-play-services-cloud-messaging-17.0.0\AndroidManifest.xml:7:5-79
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\a5d8fa11b6db0a2661c00be503af6e67\jetified-play-services-measurement-sdk-api-20.1.0\AndroidManifest.xml:24:5-79
@@ -459,6 +500,20 @@ ADDED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\librar
 		ADDED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
 	android:name
 		ADDED from [:firebase_core] D:\fyp_bbms\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-77
+	android:name
+		ADDED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-74
+service#com.baseflow.geolocator.GeolocatorLocationService
+ADDED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:9-14:56
+	android:enabled
+		ADDED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-35
+	android:exported
+		ADDED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-37
+	android:foregroundServiceType
+		ADDED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-53
+	android:name
+		ADDED from [:geolocator_android] D:\fyp_bbms\build\geolocator_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-77
 uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
 ADDED from [:flutter_local_notifications] D:\fyp_bbms\build\flutter_local_notifications\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
 	android:name
@@ -629,6 +684,26 @@ ADDED from [com.google.android.gms:play-services-measurement:20.1.0] C:\Users\ms
 		ADDED from [com.google.android.gms:play-services-measurement:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2ebd54cab4ee7dd679abcaf23b1d9d27\jetified-play-services-measurement-20.1.0\AndroidManifest.xml:43:13-69
 	android:name
 		ADDED from [com.google.android.gms:play-services-measurement:20.1.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\2ebd54cab4ee7dd679abcaf23b1d9d27\jetified-play-services-measurement-20.1.0\AndroidManifest.xml:40:13-87
+uses-feature#0x00020000
+ADDED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:26:5-28:35
+	android:glEsVersion
+		ADDED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:27:9-41
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:28:9-32
+uses-library#org.apache.http.legacy
+ADDED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:33:9-35:40
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:35:13-37
+	android:name
+		ADDED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\7312349d45b89be6e8bb629bb8ce91f5\jetified-play-services-maps-17.0.0\AndroidManifest.xml:34:13-50
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:17.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\b513423f2ebe04286dfcb594785725db\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
 uses-permission#com.google.android.gms.permission.AD_ID
 ADDED from [com.google.android.gms:play-services-ads-identifier:18.0.0] C:\Users\msi\.gradle\caches\transforms-2\files-2.1\6398d9a34de9ef69192c11c85af83bfe\jetified-play-services-ads-identifier-18.0.0\AndroidManifest.xml:23:5-79
 	android:name

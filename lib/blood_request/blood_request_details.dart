@@ -7,31 +7,11 @@ import 'package:fyp_bbms/models/blood_request.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BloodRequestDetails extends StatelessWidget {
-  final String name;
-  final String gender;
-  final String age;
-  final String hospitalName;
-  final String hospitalAddress;
-  final String email;
-  final String phoneNumber;
-  final String bloodGroup;
-  final String bloodAmount;
-  final String reason;
-  final String postTime;
+  final BloodRequest bloodRequest;
 
   BloodRequestDetails({
     Key? key,
-    required this.name,
-    required this.gender,
-    required this.age,
-    required this.hospitalName,
-    required this.hospitalAddress,
-    required this.email,
-    required this.phoneNumber,
-    required this.bloodGroup,
-    required this.bloodAmount,
-    required this.reason,
-    required this.postTime,
+    required this.bloodRequest,
   }) : super(key: key);
 
   @override
@@ -118,15 +98,18 @@ class BloodRequestDetails extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                name,
+                                bloodRequest.name,
                                 style: TextStyle(fontSize: 30),
                               ),
-                              Text("Age: $age"),
-                              Text("Gender: $gender"),
-                              Text("Hospital Name: $hospitalName"),
-                              Text("Hospital Address: $hospitalAddress"),
-                              Text("Blood Group: $bloodGroup"),
-                              Text("Blood AmountRequired: $bloodAmount"),
+                              Text("Age: ${bloodRequest.age}"),
+                              Text("Gender: ${bloodRequest.gender}"),
+                              Text(
+                                  "Hospital Name: ${bloodRequest.hospitalName}"),
+                              Text(
+                                  "Hospital Address: ${bloodRequest.hospitalAddress}"),
+                              Text("Blood Group: ${bloodRequest.bloodGroup}"),
+                              Text(
+                                  "Blood AmountRequired: ${bloodRequest.bloodAmount}"),
                             ],
                           ),
                         )
@@ -150,7 +133,7 @@ class BloodRequestDetails extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('mailto:$email');
+                                launch('mailto:${bloodRequest.email}');
                               },
                               child: Icon(
                                 Icons.mail,
@@ -169,7 +152,7 @@ class BloodRequestDetails extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('tel:$phoneNumber');
+                                launch('tel:${bloodRequest.phoneNumber}');
                               },
                               child: Icon(
                                 Icons.phone,
@@ -217,7 +200,7 @@ class BloodRequestDetails extends StatelessWidget {
                   ),
                   Container(
                     height: 200,
-                    child: Text(reason),
+                    child: Text(bloodRequest.reason),
                   ),
                   Divider(color: Color(0xFF7b8ea3)),
                   // GestureDetector(

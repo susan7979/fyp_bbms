@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/misc/khalti_main.dart';
 import 'package:fyp_bbms/nearby_organization/nearby_organization_details.dart';
@@ -18,8 +19,7 @@ class _NearbyOrganizationState extends State<NearbyOrganization> {
   List _nearbyOrganizations = [];
 
   getAllOrganization() async {
-    var response = await http.get(Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/nearby_organizations.php"));
+    var response = await http.get(Uri.parse(nearbyOrganizationUrl));
     if (response.statusCode == 200) {
       setState(() {
         _nearbyOrganizations = json.decode(response.body);
@@ -52,7 +52,6 @@ class _NearbyOrganizationState extends State<NearbyOrganization> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      
       body: ListView.builder(
           itemCount: _nearbyOrganizations.length,
           itemBuilder: (context, index) {

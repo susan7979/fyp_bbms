@@ -9,6 +9,17 @@ String bloodRequestToJson(List<BloodRequest> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class BloodRequest {
+  String name;
+  String gender;
+  String age;
+  String hospitalName;
+  String hospitalAddress;
+  String email;
+  String phoneNumber;
+  String bloodGroup;
+  String bloodAmount;
+  String reason;
+  String postTime;
   BloodRequest({
     required this.name,
     required this.gender,
@@ -22,18 +33,6 @@ class BloodRequest {
     required this.reason,
     required this.postTime,
   });
-
-  String name;
-  String gender;
-  String age;
-  String hospitalName;
-  String hospitalAddress;
-  String email;
-  String phoneNumber;
-  String bloodGroup;
-  String bloodAmount;
-  String reason;
-  String postTime;
 
   factory BloodRequest.fromJson(Map<String, dynamic> json) => BloodRequest(
         name: json["name"],

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/home.dart';
 import 'package:fyp_bbms/main.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
@@ -57,8 +58,7 @@ class _PostCampaignsState extends State<PostCampaigns> {
   final TextEditingController _campaignDate = TextEditingController();
 
   Future postCampaigns() async {
-    var url = Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/user_dashboard/post_campaigns.php");
+    var url = Uri.parse(postCampaignsUrl);
     var response = await http.post(url, body: {
       "host_name": _hostName.text,
       "campaign_location": _campaignLocation.text,
@@ -154,17 +154,48 @@ class _PostCampaignsState extends State<PostCampaigns> {
           const SizedBox(
             height: 40,
           ),
-          ElevatedButton(
-              onPressed: () {
-                postCampaigns();
-                showNotification();
-                // NotificationApi.showNotification(
-                //     title: "New campaign soon!",
-                //     body:
-                //         "There is a campaign being host at ${_campaignLocation.text}",
-                //     payload: 'hi');
-              },
-              child: Text('Share campaign'))
+          // ElevatedButton(
+          //     onPressed: () {
+          //       // NotificationApi.showNotification(
+          //       //     title: "New campaign soon!",
+          //       //     body:
+          //       //         "There is a campaign being host at ${_campaignLocation.text}",
+          //       //     payload: 'hi');
+          //     },
+          //     child: Text('Share campaign')),
+          GestureDetector(
+            onTap: () {
+              postCampaigns();
+              showNotification();
+            },
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                left: 20,
+                right: 20,
+              ),
+              padding: EdgeInsets.only(left: 20, right: 20),
+              height: 54,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.red, Colors.redAccent],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight),
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.grey[200],
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 50,
+                      color: Color(0xffEEEEEE)),
+                ],
+              ),
+              child: Text(
+                "Post Campaign",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     );

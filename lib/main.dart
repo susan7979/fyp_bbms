@@ -6,6 +6,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fyp_bbms/auth/login.dart';
 import 'package:fyp_bbms/auth/register.dart';
 import 'package:fyp_bbms/home.dart';
+import 'package:get/get.dart';
+
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high-importance_channel',
@@ -36,7 +40,12 @@ Future<void> main() async {
     sound: true,
   );
 
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider())
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,21 +54,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'BBSM',
       initialRoute: '/',
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: AnimatedSplashScreen(
-          splash: Image.asset('assets/images/launch_image.png'),
-          duration: 3000,
-          splashTransition: SplashTransition.fadeTransition,
-          backgroundColor: Colors.red,
-          nextScreen: HomePage()),
+
+      // home: AnimatedSplashScreen(
+      //     splash: Image.asset('assets/images/launch_image.png'),
+      //     duration: 3000,
+      //     splashTransition: SplashTransition.fadeTransition,
+      //     backgroundColor: Colors.red,
+      //     nextScreen: HomePage()),
       onGenerateRoute: (settings) {},
       routes: {
-        Login.routeName: (context) => Login(),
+        '/': (context) => Login(),
+        '/home': (context) => HomePage(),
       },
     );
   }

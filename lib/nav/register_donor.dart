@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,11 +22,10 @@ class _RegisterDonorState extends State<RegisterDonor> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _bloodGroup = TextEditingController();
-  final TextEditingController _amount = TextEditingController();
 
   Future registerDonor() async {
     var url = Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/user_dashboard/post_register_donor.php");
+        postDonorsUrl);
     var response = await http.post(url, body: {
       "name": _name.text,
       "gender": _gender.text,
@@ -34,7 +34,6 @@ class _RegisterDonorState extends State<RegisterDonor> {
       "email": _email.text,
       "phone_number": _phoneNumber.text,
       "blood_group": _bloodGroup.text,
-      "blood_amount": _amount.text,
     });
     var data = await json.decode(response.body);
     print(data);
@@ -128,22 +127,51 @@ class _RegisterDonorState extends State<RegisterDonor> {
                 hintText: 'Enter your blood group',
                 labelText: "Blood Group"),
           ),
-          TextFormField(
-            controller: _amount,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.bloodtype),
-                hintText: 'Enter your desired amount to donate',
-                labelText: "Amount"),
-          ),
+          // TextFormField(
+          //   controller: _amount,
+          //   decoration: const InputDecoration(
+          //       // contentPadding: EdgeInsets.all(8),
+          //       icon: Icon(Icons.bloodtype),
+          //       hintText: 'Enter your desired amount to donate',
+          //       labelText: "Amount"),
+          // ),
           const SizedBox(
             height: 40,
           ),
-          ElevatedButton(
-              onPressed: () {
-                registerDonor();
-              },
-              child: Text('Register for donating'))
+          // ElevatedButton(
+          //     onPressed: () {}, child: Text('Register for donating')),
+          GestureDetector(
+            onTap: () {
+              registerDonor();
+            },
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                left: 20,
+                right: 20,
+              ),
+              padding: EdgeInsets.only(left: 20, right: 20),
+              height: 54,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.red, Colors.redAccent],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight),
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.grey[200],
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 50,
+                      color: Color(0xffEEEEEE)),
+                ],
+              ),
+              child: Text(
+                "Register as donor",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     );

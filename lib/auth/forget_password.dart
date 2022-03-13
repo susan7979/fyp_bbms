@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
@@ -21,11 +22,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   String verifyLinkPass = '';
 
   Future checkUser() async {
-    var response = await http.post(
-        Uri.parse('http://192.168.1.79/flutter-login-signup/check.php'),
-        body: {
-          "username": _user.text,
-        });
+    var response = await http.post(Uri.parse(forgotPasswordUrl), body: {
+      "username": _user.text,
+    });
     var linkPass = json.decode(response.body);
     if (linkPass == "INVALIDUSER") {
       Fluttertoast.showToast(

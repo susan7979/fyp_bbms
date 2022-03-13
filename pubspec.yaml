@@ -54,6 +54,15 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   firebase_messaging: ^11.2.7
   firebase_core: ^1.12.0
+  google_maps_flutter: ^2.1.2
+  geolocator: ^8.2.0
+  geocoding: ^2.0.2
+  google_fonts: ^2.3.1
+  flutter_session_manager: ^1.0.2
+  get: ^4.6.1
+  flutter_form_builder: ^7.1.1
+  
+
   
   
   # khalti_flutter: ^2.0.2
@@ -70,8 +79,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-dependency_overrides:
-  firebase_messaging_platform_interface: 3.2.1
+# dependency_overrides:
+#   firebase_messaging_platform_interface: 3.2.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
