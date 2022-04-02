@@ -6,6 +6,9 @@ import 'package:fyp_bbms/home.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth_provider.dart';
 
 class UpdateDate extends StatefulWidget {
   const UpdateDate({Key? key}) : super(key: key);
@@ -16,7 +19,6 @@ class UpdateDate extends StatefulWidget {
 
 class _UpdateDateState extends State<UpdateDate> {
   String date = DateTime.now().toString();
-  final TextEditingController _id = TextEditingController();
 
   String getText() {
     if (date == null) {
@@ -29,9 +31,9 @@ class _UpdateDateState extends State<UpdateDate> {
   Future updateDate() async {
     try {
       var url = Uri.parse(
-          "http://192.168.1.79/flutter-login-signup/user_dashboard/update_donated_date.php");
+          "http://192.168.1.79/bbms_api/user_dashboard/update_donated_date.php");
       var response = await http.post(url, body: {
-        "id": _id.text,
+        "username": context.read<AuthProvider>().userName,
         "last_donated_date": date,
       });
       var data = await json.decode(response.body);
@@ -67,25 +69,22 @@ class _UpdateDateState extends State<UpdateDate> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Update donated date"),
       body: Container(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: TextFormField(
-                controller: _id,
-                decoration: InputDecoration(
-                  hintText: "Enter donor id",
-                ),
-              ),
-            ),
             SizedBox(
               height: 40,
             ),
-            Text("Select Last donated date"),
+            Text("Update your last donated date"),
             SizedBox(
               height: 20,
             ),
@@ -99,10 +98,6 @@ class _UpdateDateState extends State<UpdateDate> {
                 padding: EdgeInsets.only(left: 20, right: 20),
                 height: 54,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Colors.red, Colors.redAccent],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight),
                   borderRadius: BorderRadius.circular(50),
                   color: Colors.grey[200],
                   boxShadow: [
@@ -112,9 +107,17 @@ class _UpdateDateState extends State<UpdateDate> {
                         color: Color(0xffEEEEEE)),
                   ],
                 ),
-                child: Text(
-                  getText(),
-                  style: TextStyle(color: Colors.white),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.calendar_month),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      getText(),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -124,7 +127,7 @@ class _UpdateDateState extends State<UpdateDate> {
               },
               child: Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.only(left: 20, right: 20, top: 70),
+                margin: EdgeInsets.only(left: 20, right: 20, top: 40),
                 padding: EdgeInsets.only(left: 20, right: 20),
                 height: 54,
                 decoration: BoxDecoration(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp_bbms/auth/login.dart';
 import 'package:fyp_bbms/home.dart';
 import 'package:fyp_bbms/main.dart';
+import 'package:fyp_bbms/nav/blood_stock_page.dart';
 import 'package:fyp_bbms/nav/nearby_organizations.dart';
 import 'package:fyp_bbms/nav/post_campaigns.dart';
 import 'package:fyp_bbms/nav/request_blood.dart';
@@ -12,7 +13,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'about_me.dart';
-import 'register_donor.dart';
 
 class NavigationDrawer extends StatelessWidget {
   final padding = EdgeInsets.symmetric(
@@ -25,18 +25,27 @@ class NavigationDrawer extends StatelessWidget {
     return Drawer(
       child: Material(
         color: Colors.redAccent,
-        child: ListView(
-          children: <Widget>[
-            buildHeader(
-              image: image,
-              info: info,
-            ),
-            Divider(
-              thickness: 1,
-            ),
-            Container(
-              padding: padding,
-              child: Column(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            // color: Colors.black45,
+            gradient: LinearGradient(colors: [
+              Color.fromARGB(255, 248, 116, 107),
+              Color.fromARGB(255, 250, 59, 45)
+            ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+          ),
+          child: ListView(
+            children: <Widget>[
+              Container(
+                child: buildHeader(
+                  image: image,
+                  info: info,
+                ),
+              ),
+              Divider(
+                thickness: 1,
+              ),
+              Column(
                 children: [
                   buildMenuItem(
                       text: 'Home',
@@ -53,36 +62,36 @@ class NavigationDrawer extends StatelessWidget {
                     height: 48,
                   ),
                   buildMenuItem(
-                      text: 'Register for Donating blood',
-                      icon: Icons.arrow_forward_rounded,
-                      onClicked: () => selectedItem(context, 2)),
-                  const SizedBox(
-                    height: 48,
-                  ),
-                  buildMenuItem(
                       text: 'Update donated date',
                       icon: Icons.logout,
-                      onClicked: () => selectedItem(context, 3)),
+                      onClicked: () => selectedItem(context, 2)),
                   const SizedBox(
                     height: 48,
                   ),
                   buildMenuItem(
                       text: 'Nearby Organizations',
                       icon: Icons.local_hospital,
-                      onClicked: () => selectedItem(context, 4)),
+                      onClicked: () => selectedItem(context, 3)),
                   const SizedBox(
                     height: 48,
                   ),
                   buildMenuItem(
                       text: 'Create Donation Campaign',
                       icon: Icons.campaign,
-                      onClicked: () => selectedItem(context, 5)),
+                      onClicked: () => selectedItem(context, 4)),
                   const SizedBox(
                     height: 48,
                   ),
                   buildMenuItem(
                       text: 'About me',
                       icon: Icons.shield,
+                      onClicked: () => selectedItem(context, 5)),
+                  const SizedBox(
+                    height: 48,
+                  ),
+                  buildMenuItem(
+                      text: 'BloodStock',
+                      icon: Icons.bloodtype_rounded,
                       onClicked: () => selectedItem(context, 6)),
                   const SizedBox(
                     height: 48,
@@ -93,14 +102,14 @@ class NavigationDrawer extends StatelessWidget {
                       onClicked: () => selectedItem(context, 7)),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 48,
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-          ],
+              const SizedBox(
+                height: 48,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -148,7 +157,10 @@ class NavigationDrawer extends StatelessWidget {
                     children: [
                       Text(
                         info,
-                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            decoration: TextDecoration.underline),
                       ),
                       SizedBox(
                         width: 5,
@@ -190,48 +202,41 @@ class NavigationDrawer extends StatelessWidget {
     Navigator.of(context).pop();
     switch (index) {
       case 0:
+        // Get.to(() => HomePage(), transition: Transition.rightToLeftWithFade);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomePage(),
         ));
         break;
       case 1:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RequestBlood(),
-        ));
+        Get.to(() => RequestBlood(),
+            transition: Transition.rightToLeftWithFade);
         break;
+
       case 2:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RegisterDonor(),
-        ));
+        Get.to(() => UpdateDate(), transition: Transition.rightToLeftWithFade);
         break;
       case 3:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => UpdateDate(),
-        ));
+        Get.to(() => NearbyOrganization(),
+            transition: Transition.rightToLeftWithFade);
         break;
+
       case 4:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => NearbyOrganization(),
-        ));
+        Get.to(() => PostCampaigns(),
+            transition: Transition.rightToLeftWithFade);
         break;
 
       case 5:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PostCampaigns(),
-        ));
+        Get.to(() => AboutMe(), transition: Transition.rightToLeftWithFade);
         break;
-
       case 6:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AboutMe(),
-        ));
+        Get.to(() => BloodStockPage(),
+            transition: Transition.rightToLeftWithFade);
         break;
       case 7:
         Navigator.of(context).pop();
+        Navigator.of(context).pop();
 
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Login(),
-        ));
+        Get.to(() => Login(), transition: Transition.rightToLeftWithFade);
         break;
     }
   }

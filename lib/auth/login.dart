@@ -5,17 +5,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp_bbms/auth/forget_password.dart';
 import 'package:fyp_bbms/api.dart';
 
-import 'package:fyp_bbms/nav/register_donor.dart';
-import 'package:fyp_bbms/models/blood_request.dart';
 import 'package:fyp_bbms/auth/register.dart';
 import 'package:fyp_bbms/providers/auth_provider.dart';
-import 'package:get/get.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:developer';
-
-import '../home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -28,6 +23,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _user = TextEditingController();
   final TextEditingController _pass = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   savePref(int value, String username, int id) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -46,13 +42,6 @@ class _LoginState extends State<Login> {
       "password": _pass.text,
     });
     var data = json.decode(response.body);
-    Map<String, dynamic> resposne = jsonDecode(response.body);
-    log(response.body);
-    if (!resposne['error']) {
-      Map<String, dynamic> user = resposne['data'];
-      print(" User name ${user['data']}");
-      Get.to(() => HomePage());
-    }
 
     print(response.statusCode);
 
@@ -66,9 +55,9 @@ class _LoginState extends State<Login> {
           textColor: Colors.white,
           fontSize: 16.0);
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (BuildContext context) => HomePage(),
-      ));
+      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //   builder: (BuildContext context) => HomePage(),
+      // ));
     } else {
       Fluttertoast.showToast(
           msg: "Login failed!",

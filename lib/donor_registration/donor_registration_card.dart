@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp_bbms/models/donor_register.dart';
 
-class DonorRegistrationCard extends StatelessWidget {
+import '../api.dart';
+
+class DonorRegistrationCard extends StatefulWidget {
   const DonorRegistrationCard({
     Key? key,
     required this.donorRegister,
@@ -11,11 +13,30 @@ class DonorRegistrationCard extends StatelessWidget {
   final DonorRegister donorRegister;
 
   @override
+  State<DonorRegistrationCard> createState() => _DonorRegistrationCardState();
+}
+
+class _DonorRegistrationCardState extends State<DonorRegistrationCard> {
+  Future<bool> isEligible() async {
+    if (widget.donorRegister.donationEligibility == 'non-eligible') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.red[300],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 12,
+    return Container(
+      // color: Colors.red[300],
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        // color: Colors.black45,
+        gradient: LinearGradient(colors: [
+          Color.fromARGB(255, 255, 152, 145),
+          Color.fromARGB(255, 245, 70, 58)
+        ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,10 +51,8 @@ class DonorRegistrationCard extends StatelessWidget {
               child: CircleAvatar(
                 radius: 40,
                 backgroundColor: Colors.red,
-                child: Text(
-                  donorRegister.bloodGroup,
-                  style: TextStyle(fontSize: 16),
-                ),
+                backgroundImage: NetworkImage(
+                    "http://192.168.1.79/bbms_api/images/${widget.donorRegister.profileImage}"),
               ),
             ),
             title: Container(
@@ -44,7 +63,7 @@ class DonorRegistrationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      donorRegister.name,
+                      widget.donorRegister.name,
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -56,7 +75,7 @@ class DonorRegistrationCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          donorRegister.address,
+                          widget.donorRegister.address,
                           style: TextStyle(
                             fontSize: 18,
                           ),
@@ -68,8 +87,15 @@ class DonorRegistrationCard extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      donorRegister.age,
+                      widget.donorRegister.age,
                       style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      widget.donorRegister.donationEligibility,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                     // Text(
                     //   widget.bloodRequest.phoneNumber,
@@ -83,6 +109,7 @@ class DonorRegistrationCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
+              //
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Tap to see more..."),

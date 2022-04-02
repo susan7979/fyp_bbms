@@ -70,76 +70,71 @@ class DonorRegistrationDetails extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 0, right: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // IconButton(
-                        //     padding: EdgeInsets.zero,
-                        //     constraints: BoxConstraints(),
-                        //     icon: Icon(Icons.arrow_back_ios,
-                        //         color: Color(0xFF363f93)),
-                        //     onPressed: () => Navigator.pop(context))
-                      ],
-                    ),
-                  ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
-                  Container(
-                    child: Row(
-                      children: [
-                        // Material(
-                        //   elevation: 0.0,
-                        //   child: Container(
-                        //     height: 180,
-                        //     width: 150,
-                        //     decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //       boxShadow: [
-                        //         BoxShadow(
-                        //             color: Colors.grey.withOpacity(0.5),
-                        //             spreadRadius: 5,
-                        //             blurRadius: 7,
-                        //             offset: Offset(0, 3))
-                        //       ],
-                        //       // image: DecorationImage(
-                        //       //   image: NetworkImage(
-                        //       //     "http://mark.dbestech.com/uploads/"+this.widget.articleInfo.img
-                        //       //   ),
-                        //       //   fit:BoxFit.fill
-                        //       // )
-                        //     ),
-                        //   ),
-                        // ),
-                        Container(
-                          width: screenWidth - 30 - 100 - 20,
-                          margin: const EdgeInsets.only(left: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                donorRegister.name,
-                                style: TextStyle(fontSize: 30),
-                              ),
-                              Text("Age: ${donorRegister.age}"),
-                              Text("Gender: ${donorRegister.gender}"),
-                              Text("Address: ${donorRegister.address}"),
-                              Text("Blood Group: ${donorRegister.bloodGroup}"),
-                              // Text("Blood AmountRequired: $bloodAmount"),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Material(
+                        elevation: 0.0,
+                        child: Container(
+                          height: 180,
+                          width: 170,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 3))
+                              ],
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "http://192.168.1.79/bbms_api/images/${donorRegister.profileImage}"),
+                                  fit: BoxFit.fill)),
+                        ),
+                      ),
+                      Container(
+                        width: screenWidth - 30 - 170 - 20,
+                        margin: const EdgeInsets.only(left: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                            // Text("Blood AmountRequired: $bloodAmount"),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        "Details: ",
+                        style: TextStyle(fontSize: 24, color: Colors.red),
+                      ),
+                      Text(
+                        donorRegister.name,
+                        style: TextStyle(fontSize: 23),
+                      ),
+                      Text("Age: ${donorRegister.age}"),
+                      Text("Gender: ${donorRegister.gender}"),
+                      Text("Address: ${donorRegister.address}"),
+                      Text("Blood Group: ${donorRegister.bloodGroup}"),
+                    ],
                   ),
                   SizedBox(
                     height: 40,
                   ),
+
                   Divider(color: Color(0xFF7b8ea3)),
                   SizedBox(
                     height: 10,

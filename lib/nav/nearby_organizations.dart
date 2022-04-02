@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/misc/khalti_main.dart';
+import 'package:fyp_bbms/models/blood_request.dart';
+import 'package:fyp_bbms/models/nearby_organization_model.dart';
 import 'package:fyp_bbms/nearby_organization/nearby_organization_details.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,16 +18,23 @@ class NearbyOrganization extends StatefulWidget {
 }
 
 class _NearbyOrganizationState extends State<NearbyOrganization> {
-  List _nearbyOrganizations = [];
+  List<NearbyOrganizationsModel> _nearbyOrganizations = [];
 
-  getAllOrganization() async {
-    var response = await http.get(Uri.parse(nearbyOrganizationUrl));
-    if (response.statusCode == 200) {
-      setState(() {
-        _nearbyOrganizations = json.decode(response.body);
-      });
-      print(_nearbyOrganizations);
-      return _nearbyOrganizations;
+  Future<List<NearbyOrganizationsModel>> getAllOrganization() async {
+    try {
+      var response = await http.get(Uri.parse(nearbyOrganizationUrl));
+      if (response.statusCode == 200) {
+        final List<NearbyOrganizationsModel> _nearbyOrganizations =
+            nearbyOrganizationsModelFromJson(response.body);
+
+        print(_nearbyOrganizations);
+        return _nearbyOrganizations;
+      } else {
+        return <NearbyOrganizationsModel>[];
+      }
+    } on Exception catch (e) {
+      return <NearbyOrganizationsModel>[];
+      print(e);
     }
   }
 
@@ -34,6 +43,11 @@ class _NearbyOrganizationState extends State<NearbyOrganization> {
     // TODO: implement initState
     super.initState();
     getAllOrganization();
+    getAllOrganization().then((nearbyOrganization) {
+      setState(() {
+        _nearbyOrganizations = nearbyOrganization;
+      });
+    });
   }
 
   @override
@@ -55,13 +69,19 @@ class _NearbyOrganizationState extends State<NearbyOrganization> {
       body: ListView.builder(
           itemCount: _nearbyOrganizations.length,
           itemBuilder: (context, index) {
-            return Card(
-              color: Colors.red[200],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              elevation: 12,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
+            NearbyOrganizationsModel nearbyOrganizationsModel =
+                _nearbyOrganizations[index];
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  // color: Colors.black45,
+                  gradient: LinearGradient(colors: [
+                    Color.fromARGB(255, 255, 152, 145),
+                    Color.fromARGB(255, 245, 70, 58)
+                  ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,25 +95,15 @@ class _NearbyOrganizationState extends State<NearbyOrganization> {
                           children: [
                             ListTile(
                               leading: Text(
-                                _nearbyOrganizations[index]['name'],
+                                nearbyOrganizationsModel.name,
                                 style: TextStyle(fontSize: 20),
                               ),
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         NearbyOrganizationDetails(
-                                          name: _nearbyOrganizations[index]
-                                              ['name'],
-                                          establishedDate:
-                                              _nearbyOrganizations[index]
-                                                  ['established_date'],
-                                          location: _nearbyOrganizations[index]
-                                              ['location'],
-                                          email: _nearbyOrganizations[index]
-                                              ['email'],
-                                          phoneNumber:
-                                              _nearbyOrganizations[index]
-                                                  ['phone_number'],
+                                          nearbyOrganizationsModel:
+                                              nearbyOrganizationsModel,
                                         )));
                               },
                             ),

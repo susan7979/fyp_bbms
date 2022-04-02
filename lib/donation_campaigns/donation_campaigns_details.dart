@@ -40,20 +40,11 @@ class DonationCampaignsDetails extends StatelessWidget {
               color: Colors.grey[50],
               padding: const EdgeInsets.only(left: 20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 0, right: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // IconButton(
-                        //     padding: EdgeInsets.zero,
-                        //     constraints: BoxConstraints(),
-                        //     icon: Icon(Icons.arrow_back_ios,
-                        //         color: Color(0xFF363f93)),
-                        //     onPressed: () => Navigator.pop(context))
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [],
                   ),
                   SizedBox(
                     height: 15,
@@ -92,6 +83,11 @@ class DonationCampaignsDetails extends StatelessWidget {
                             children: [
                               SizedBox(
                                 height: 10,
+                              ),
+                              Text(
+                                "Details: ",
+                                style:
+                                    TextStyle(fontSize: 24, color: Colors.red),
                               ),
                               Text(
                                 donationCampaign.hostName,
@@ -175,18 +171,11 @@ class DonationCampaignsDetails extends StatelessWidget {
                   SizedBox(
                     height: 40,
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          "Campaign description",
-                          style: TextStyle(fontSize: 24, color: Colors.red),
-                        ),
-                      ),
-                      Expanded(child: Container())
-                    ],
+                  Text(
+                    "Campaign description: ",
+                    style: TextStyle(fontSize: 24, color: Colors.red),
                   ),
+                  Text('asd'),
                   SizedBox(
                     height: 30,
                   ),
@@ -194,7 +183,7 @@ class DonationCampaignsDetails extends StatelessWidget {
                     height: 200,
                     child: Text(donationCampaign.campaignDescription),
                   ),
-                  Divider(color: Color(0xFF7b8ea3)),
+
                   // GestureDetector(
                   //   onTap: () {
                   //     // Navigator.push(context, MaterialPageRoute(builder: (context)=>AllBooks()));

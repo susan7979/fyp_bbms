@@ -1,11 +1,11 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fyp_bbms/auth/login.dart';
-import 'package:fyp_bbms/auth/register.dart';
+
 import 'package:fyp_bbms/home.dart';
+import 'package:fyp_bbms/providers/donor_register_provider.dart';
 import 'package:get/get.dart';
 
 import 'package:provider/provider.dart';
@@ -42,7 +42,9 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider())
+      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+      ChangeNotifierProvider<DonorRegisterProvider>(
+          create: (_) => DonorRegisterProvider()),
     ],
     child: MyApp(),
   ));

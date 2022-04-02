@@ -50,6 +50,7 @@ class _PostCampaignsState extends State<PostCampaigns> {
         )));
   }
 
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _hostName = TextEditingController();
   final TextEditingController _campaignLocation = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -100,103 +101,289 @@ class _PostCampaignsState extends State<PostCampaigns> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Donation Campaigns"),
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: [
-          TextFormField(
-            controller: _hostName,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.person),
-                hintText: 'Campaign Host',
-                labelText: "Host"),
-          ),
-          TextFormField(
-            controller: _campaignLocation,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.home),
-                hintText: 'Enter Campaign Location',
-                labelText: "Campaign Location"),
-          ),
-          TextFormField(
-            controller: _campaignDate,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.date_range),
-                hintText: 'Campaign Date',
-                labelText: "Campaign Date"),
-          ),
-          TextFormField(
-            controller: _email,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.email),
-                hintText: 'Email for queries',
-                labelText: "Email"),
-          ),
-          TextFormField(
-            controller: _phoneNumber,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.phone),
-                hintText: "Enter manager's phone number",
-                labelText: "Phone Number"),
-          ),
-          TextFormField(
-            controller: _campaignDescription,
-            decoration: const InputDecoration(
-                // contentPadding: EdgeInsets.all(8),
-                icon: Icon(Icons.question_answer),
-                hintText: 'Enter campaign description',
-                labelText: "Campaign Description"),
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          // ElevatedButton(
-          //     onPressed: () {
-          //       // NotificationApi.showNotification(
-          //       //     title: "New campaign soon!",
-          //       //     body:
-          //       //         "There is a campaign being host at ${_campaignLocation.text}",
-          //       //     payload: 'hi');
-          //     },
-          //     child: Text('Share campaign')),
-          GestureDetector(
-            onTap: () {
-              postCampaigns();
-              showNotification();
-            },
-            child: Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              padding: EdgeInsets.only(left: 20, right: 20),
-              height: 54,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.red, Colors.redAccent],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight),
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.grey[200],
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(0, 10),
-                      blurRadius: 50,
-                      color: Color(0xffEEEEEE)),
-                ],
-              ),
-              child: Text(
-                "Post Campaign",
-                style: TextStyle(color: Colors.white),
-              ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.all(16),
+          children: [
+            hostNameTextField(),
+            campaignLocationFormField(),
+            campaignDateFormField(),
+            emailTextField(),
+            phoneNumberFormField(),
+            campaignDescriptionFormField(),
+
+            const SizedBox(
+              height: 40,
             ),
-          ),
+            // ElevatedButton(
+            //     onPressed: () {
+            //       // NotificationApi.showNotification(
+            //       //     title: "New campaign soon!",
+            //       //     body:
+            //       //         "There is a campaign being host at ${_campaignLocation.text}",
+            //       //     payload: 'hi');
+            //     },
+            //     child: Text('Share campaign')),
+            GestureDetector(
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  postCampaigns();
+                  showNotification();
+                }
+              },
+              child: postCampaignsBtn(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget hostNameTextField() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
         ],
+      ),
+      child: TextFormField(
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please enter campaign host name";
+          }
+          return null;
+        },
+        controller: _hostName,
+        cursorColor: Colors.red,
+        decoration: InputDecoration(
+          icon: Icon(
+            Icons.person,
+            color: Colors.red,
+          ),
+          hintText: "Campaign host",
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget campaignLocationFormField() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+        ],
+      ),
+      child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please enter your campaign location";
+          }
+          return null;
+        },
+        controller: _campaignLocation,
+        cursorColor: Colors.red,
+        decoration: InputDecoration(
+          icon: Icon(
+            Icons.location_pin,
+            color: Colors.red,
+          ),
+          hintText: "Campaign Location",
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget emailTextField() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+        ],
+      ),
+      child: TextFormField(
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please enter host email";
+          }
+          return null;
+        },
+        controller: _email,
+        cursorColor: Colors.red,
+        decoration: InputDecoration(
+          icon: Icon(
+            Icons.email,
+            color: Colors.red,
+          ),
+          hintText: "Email for queries",
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget campaignDateFormField() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
+      height: 54,
+      decoration: BoxDecoration(
+        
+        borderRadius: BorderRadius.circular(50),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+        ],
+      ),
+      child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please enter the date";
+          }
+          return null;
+        },
+        controller: _campaignDate,
+        cursorColor: Colors.red,
+        decoration: InputDecoration(
+          icon: Icon(
+            Icons.calendar_month,
+            color: Colors.red,
+          ),
+          hintText: "Campaign Date",
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget phoneNumberFormField() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+        ],
+      ),
+      child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please enter Phone number ";
+          }
+          return null;
+        },
+        controller: _phoneNumber,
+        cursorColor: Colors.red,
+        decoration: InputDecoration(
+          icon: Icon(
+            Icons.phone,
+            color: Colors.red,
+          ),
+          hintText: "Phone number",
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget campaignDescriptionFormField() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
+      height: 108,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+        ],
+      ),
+      child: TextFormField(
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please enter campaign description";
+          }
+          return null;
+        },
+        controller: _campaignLocation,
+        cursorColor: Colors.red,
+        decoration: InputDecoration(
+          icon: Icon(
+            Icons.comment,
+            color: Colors.red,
+          ),
+          hintText: "Campaign Description",
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget postCampaignsBtn() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
+      padding: EdgeInsets.only(left: 20, right: 20),
+      height: 54,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Colors.red, Colors.redAccent],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight),
+        borderRadius: BorderRadius.circular(50),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
+        ],
+      ),
+      child: Text(
+        "Post Campaign",
+        style: TextStyle(color: Colors.white),
       ),
     );
   }

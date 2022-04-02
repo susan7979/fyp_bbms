@@ -2,21 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/misc/khalti_main.dart';
+import 'package:fyp_bbms/models/nearby_organization_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NearbyOrganizationDetails extends StatelessWidget {
-  final String name;
-  final String establishedDate;
-  final String location;
-  final String email;
-  final String phoneNumber;
-  NearbyOrganizationDetails({
-    required this.name,
-    required this.establishedDate,
-    required this.location,
-    required this.email,
-    required this.phoneNumber,
-  });
+  final NearbyOrganizationsModel nearbyOrganizationsModel;
+
+  const NearbyOrganizationDetails(
+      {Key? key, required this.nearbyOrganizationsModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -192,12 +186,6 @@ class NearbyOrganizationDetails extends StatelessWidget {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                name,
-                                style: TextStyle(fontSize: 30),
-                              ),
-                              Text("ESTD: $establishedDate"),
-                              Divider(color: Colors.grey),
                             ],
                           ),
                         )
@@ -205,8 +193,24 @@ class NearbyOrganizationDetails extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        "Details: ",
+                        style: TextStyle(fontSize: 24, color: Colors.red),
+                      ),
+                      Text(
+                        nearbyOrganizationsModel.name,
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      Text("ESTD: ${nearbyOrganizationsModel.establishedDate}"),
+                    ],
+                  ),
+
                   Divider(color: Color(0xFF7b8ea3)),
                   SizedBox(
                     height: 10,
@@ -221,7 +225,8 @@ class NearbyOrganizationDetails extends StatelessWidget {
                           children: <Widget>[
                             IconButton(
                                 onPressed: () {
-                                  launch('mailto:$email');
+                                  launch(
+                                      'mailto:${nearbyOrganizationsModel.email}');
                                 },
                                 icon: Icon(
                                   Icons.mail,
@@ -235,7 +240,8 @@ class NearbyOrganizationDetails extends StatelessWidget {
                           children: <Widget>[
                             IconButton(
                                 onPressed: () {
-                                  launch('tel:$phoneNumber');
+                                  launch(
+                                      'tel:${nearbyOrganizationsModel.phoneNumber}');
                                 },
                                 icon: Icon(
                                   Icons.phone,

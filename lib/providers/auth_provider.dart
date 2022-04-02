@@ -14,21 +14,31 @@ class AuthProvider with ChangeNotifier {
   String? _tokenKey;
   bool _isAuthOnGoing;
   String _userName = '';
+  int _id;
+  Image? _image;
 
   final SessionManager _sessionManager;
 
   AuthProvider()
       : _sessionManager = SessionManager(),
-        _isAuthOnGoing = false;
+        _isAuthOnGoing = false,
+        _id = 0;
 
   bool get isAuth {
     return _tokenKey != null;
   }
 
   String get userName => _userName;
+  int get id => _id;
+  Image? get image => _image;
 
   set userName(String userName) {
     _userName = userName;
+    notifyListeners();
+  }
+
+  set id(int id) {
+    _id = id;
     notifyListeners();
   }
 
@@ -93,7 +103,7 @@ class AuthProvider with ChangeNotifier {
       // Navigator.of(context).pushReplacement(MaterialPageRoute(
       //   builder: (BuildContext context) => HomePage(),
       // ));
-      Get.to(() => HomePage());
+      Get.to(() => HomePage(), transition: Transition.rightToLeft);
     } else {
       Fluttertoast.showToast(
           msg: "Login failed!",
