@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,11 +7,14 @@ import 'package:get/get.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
 
 class AuthProvider with ChangeNotifier {
   String? _tokenKey;
   bool _isAuthOnGoing;
-  String _userName = '';
+  String _userName;
   int _id;
   Image? _image;
 
@@ -22,13 +23,18 @@ class AuthProvider with ChangeNotifier {
   AuthProvider()
       : _sessionManager = SessionManager(),
         _isAuthOnGoing = false,
-        _id = 0;
+        _id = 0,
+        _userName = '';
 
   bool get isAuth {
     return _tokenKey != null;
   }
 
-  String get userName => _userName;
+  String get userName {
+    return _userName;
+    notifyListeners();
+  }
+
   int get id => _id;
   Image? get image => _image;
 
@@ -44,43 +50,14 @@ class AuthProvider with ChangeNotifier {
 
   String? get tokenKey => _tokenKey;
 
+  set tokenKey(String? tokenKey) {
+    _tokenKey = tokenKey;
+    notifyListeners();
+  }
+
   bool get isAuthOnGoing => _isAuthOnGoing;
 
-  // Future<void> _authenticate(String username, String password) async {
-  //   _isAuthOnGoing = true;
-  //   try {
-  //     final response = await http.post(
-  //       Uri.parse(LOGIN),
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: json.encode(
-  //         {
-  //           "username": username,
-  //           "email": "",
-  //           "password": password,
-  //         },
-  //       ),
-  //     );
-  //     final responseData = json.decode(response.body);
-  //     if (responseData['non_field_errors'] != null) {
-  //       throw HttpException(responseData['non_field_errors'][0]);
-  //     }
-  //     await Future.delayed(const Duration(seconds: 1));
-  //     _tokenKey = responseData['key'];
-  //     _sessionManager.set('tokenKey', _tokenKey);
-  //   } catch (error) {
-  //     _tokenKey = null;
-  //   }
-  //   _isAuthOnGoing = false;
-  //   notifyListeners();
-  // }
-
-  // Future<void> signup(String email, String password) async {
-  //   return _authenticate(email, password);
-  // }
-  Future login(String username, String password) async {
+  Future<void> login(String username, dynamic password) async {
     var url = Uri.parse(loginUrl);
     var response = await http.post(url, body: {
       "username": username,
@@ -89,28 +66,37 @@ class AuthProvider with ChangeNotifier {
     var data = json.decode(response.body);
 
     print(data);
+    print(" User name ${data['username']}");
+    // savePref(1, data['username']);
 
-    if (data == "Success") {
+    if (data['msg'] == "success") {
+      await SessionManager().set('token', username);
+      // await SessionManager().set('username', username);
       Fluttertoast.showToast(
           msg: "Login Succesfull!",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.greenAccent,
           textColor: Colors.white,
           fontSize: 16.0);
 
-      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+      // Builder(builder: (context){
+      //   Navigator.of(context).pushReplacement(MaterialPageRoute(
       //   builder: (BuildContext context) => HomePage(),
       // ));
-      Get.to(() => HomePage(), transition: Transition.rightToLeft);
+      // });
+      Get.off(() => HomePage(), transition: Transition.rightToLeft);
+      // navigatorKey.currentState
+      //     ?.pushNamed('/home'); // navigate to login, with null-aware check
+
     } else {
       Fluttertoast.showToast(
           msg: "Login failed!",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
     }
@@ -119,12 +105,19 @@ class AuthProvider with ChangeNotifier {
   // Future<void> login(String username, String password) async =>
   //     _authenticate(username, password);
 
-  // Future<void> tryAutoLogin() async {
-  //   String? _ = await _sessionManager.get('tokenKey');
-  //   await Future.delayed(Duration(seconds: 2));
-  //   if (_ == null) return;
-  //   _tokenKey = _;
-  // }
+  Future<void> tryAutoLogin() async {
+    _tokenKey = await SessionManager().get('token');
+    _userName = await SessionManager().get('token');
+
+    print(_tokenKey);
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    _tokenKey = await SessionManager().set('token', '');
+    notifyListeners();
+    // _userName = await SessionManager().get('username');
+  }
 
   // return type: bool represents if the method executed successfully.
   // Future<bool> logout() async {

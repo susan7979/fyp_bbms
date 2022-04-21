@@ -6,7 +6,7 @@ import 'package:fyp_bbms/models/blood_request.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-class BloodRequestDetails extends StatelessWidget {
+class BloodRequestDetails extends StatefulWidget {
   final BloodRequest bloodRequest;
 
   BloodRequestDetails({
@@ -15,7 +15,27 @@ class BloodRequestDetails extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<BloodRequestDetails> createState() => _BloodRequestDetailsState();
+}
+
+class _BloodRequestDetailsState extends State<BloodRequestDetails> {
+  static Future<void> openMap(double latitude, double longitude) async {
+    final String googleUrl =
+        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+    if (await canLaunch(googleUrl)) {
+      await launch(
+        googleUrl,
+      );
+    } else {
+      print('Could not launch $googleUrl');
+      throw 'Could not launch $googleUrl';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    double latitude = double.parse(widget.bloodRequest.latitude);
+    double longitude = double.parse(widget.bloodRequest.longitude);
     final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -98,18 +118,19 @@ class BloodRequestDetails extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                bloodRequest.name,
+                                widget.bloodRequest.name,
                                 style: TextStyle(fontSize: 30),
                               ),
-                              Text("Age: ${bloodRequest.age}"),
-                              Text("Gender: ${bloodRequest.gender}"),
+                              Text("Age: ${widget.bloodRequest.age}"),
+                              Text("Gender: ${widget.bloodRequest.gender}"),
                               Text(
-                                  "Hospital Name: ${bloodRequest.hospitalName}"),
+                                  "Hospital Name: ${widget.bloodRequest.hospitalName}"),
                               Text(
-                                  "Hospital Address: ${bloodRequest.hospitalAddress}"),
-                              Text("Blood Group: ${bloodRequest.bloodGroup}"),
+                                  "Hospital Address: ${widget.bloodRequest.hospitalAddress}"),
                               Text(
-                                  "Blood AmountRequired: ${bloodRequest.bloodAmount}"),
+                                  "Blood Group: ${widget.bloodRequest.bloodGroup}"),
+                              Text(
+                                  "Blood AmountRequired: ${widget.bloodRequest.bloodAmount}"),
                             ],
                           ),
                         )
@@ -133,7 +154,7 @@ class BloodRequestDetails extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('mailto:${bloodRequest.email}');
+                                launch('mailto:${widget.bloodRequest.email}');
                               },
                               child: Icon(
                                 Icons.mail,
@@ -150,9 +171,25 @@ class BloodRequestDetails extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
+                            IconButton(
+                                onPressed: () async {
+                                  openMap(latitude, longitude);
+                                },
+                                icon: Icon(
+                                  Icons.pin_drop_sharp,
+                                  color: Colors.blue,
+                                  size: 40,
+                                )),
+                            Text("Location"),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                launch('tel:${bloodRequest.phoneNumber}');
+                                launch(
+                                    'tel:${widget.bloodRequest.phoneNumber}');
                               },
                               child: Icon(
                                 Icons.phone,
@@ -160,7 +197,7 @@ class BloodRequestDetails extends StatelessWidget {
                                 size: 40,
                               ),
                             ),
-                            Text("Call now")
+                            Text("Call")
                           ],
                         ),
                         // Row(
@@ -200,7 +237,7 @@ class BloodRequestDetails extends StatelessWidget {
                   ),
                   Container(
                     height: 200,
-                    child: Text(bloodRequest.reason),
+                    child: Text(widget.bloodRequest.reason),
                   ),
                   Divider(color: Color(0xFF7b8ea3)),
                   // GestureDetector(

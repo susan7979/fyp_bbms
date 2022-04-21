@@ -40,11 +40,22 @@ class DonationCampaignsCard extends StatelessWidget {
                       border: Border(
                           right:
                               BorderSide(width: 1.0, color: Colors.white24))),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://image.shutterstock.com/image-vector/blood-donation-campaign-elements-600w-1253623990.jpg",
-                        scale: 1),
-                    radius: 50,
+                  child: Container(
+                    height: 200,
+                    width: 60,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          // BoxShadow(
+                          //     color: Colors.grey.withOpacity(0.5),
+                          //     spreadRadius: 5,
+                          //     blurRadius: 7,
+                          //     offset: const Offset(0, 3))
+                        ],
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlYujh7WMsT8KV2yGJMDZMbSpbY17ZZt5QSA&usqp=CAU"),
+                            fit: BoxFit.fill)),
                   ),
                 ),
                 title: Container(

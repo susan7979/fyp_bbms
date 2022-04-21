@@ -20,6 +20,8 @@ class BloodRequest {
   String bloodAmount;
   String reason;
   String postTime;
+  String latitude;
+  String longitude;
   BloodRequest({
     required this.name,
     required this.gender,
@@ -32,6 +34,8 @@ class BloodRequest {
     required this.bloodAmount,
     required this.reason,
     required this.postTime,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory BloodRequest.fromJson(Map<String, dynamic> json) => BloodRequest(
@@ -46,6 +50,8 @@ class BloodRequest {
         bloodAmount: json["blood_amount"],
         reason: json["reason"],
         postTime: json["post_time"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -60,5 +66,7 @@ class BloodRequest {
         "blood_amount": bloodAmount,
         "reason": reason,
         "post_time": postTime,
+        "latitude": latitude,
+        "longitude": longitude,
       };
 }

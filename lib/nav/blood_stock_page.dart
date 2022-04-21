@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fyp_bbms/models/blood_stock.dart';
 import 'package:http/http.dart' as http;
 
+import '../api.dart';
+
 class BloodStockPage extends StatefulWidget {
   const BloodStockPage({Key? key}) : super(key: key);
 
@@ -13,8 +15,7 @@ class BloodStockPage extends StatefulWidget {
 class _BloodStockPageState extends State<BloodStockPage> {
   List<BloodStockModel> _bloodStock = [];
   Future<List<BloodStockModel>> getBloodStock() async {
-    var response = await http
-        .get(Uri.parse('http://192.168.1.79/bbms_api/blood_stocks.php'));
+    var response = await http.get(Uri.parse(bloodStockUrl));
     if (response.statusCode == 200) {
       final List<BloodStockModel> _bloodStock =
           bloodStockModelFromJson(response.body);

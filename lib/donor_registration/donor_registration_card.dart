@@ -43,20 +43,32 @@ class _DonorRegistrationCardState extends State<DonorRegistrationCard> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
+            dense: false,
             leading: Container(
               padding: EdgeInsets.only(right: 12.0),
               decoration: BoxDecoration(
                   border: Border(
                       right: BorderSide(width: 1.0, color: Colors.white24))),
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.red,
-                backgroundImage: NetworkImage(
-                    "http://192.168.1.79/bbms_api/images/${widget.donorRegister.profileImage}"),
+              child: Container(
+                height: 200,
+                width: 60,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      // BoxShadow(
+                      //     color: Colors.redAccent.withOpacity(0.2),
+                      //     spreadRadius: 5,
+                      //     blurRadius: 7,
+                      //     offset: const Offset(0, 3))
+                    ],
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "$rootUrl/bbms_api/images/${widget.donorRegister.profileImage}"),
+                        fit: BoxFit.fill)),
               ),
             ),
             title: Container(
-              decoration: BoxDecoration(),
+              // decoration: BoxDecoration(),
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Column(
@@ -88,6 +100,10 @@ class _DonorRegistrationCardState extends State<DonorRegistrationCard> {
                     ),
                     Text(
                       widget.donorRegister.age,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      widget.donorRegister.bloodGroup,
                       style: TextStyle(fontSize: 18),
                     ),
                     Text(

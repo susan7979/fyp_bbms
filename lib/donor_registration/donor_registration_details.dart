@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/models/donor_register.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -91,7 +92,7 @@ class DonorRegistrationDetails extends StatelessWidget {
                               ],
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      "http://192.168.1.79/bbms_api/images/${donorRegister.profileImage}"),
+                                      "$rootUrl/bbms_api/images/${donorRegister.profileImage}"),
                                   fit: BoxFit.fill)),
                         ),
                       ),

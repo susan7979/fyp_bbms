@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/nav/post_campaigns.dart';
 import 'package:fyp_bbms/nav/request_blood.dart';
 import 'bottom_nav/blood_request_page.dart';
@@ -46,7 +47,9 @@ class _HomePageState extends State<HomePage> {
         }
       },
       child: Scaffold(
-        // appBar: AppBar(),
+        // appBar: CustomAppBar(
+        //   title: 'BloodSource',
+        // ),
         key: _drawerKey,
 
         // drawer: NavigationDrawer(),

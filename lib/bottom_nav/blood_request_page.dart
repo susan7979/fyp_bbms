@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:get/get.dart';
 
 import '../api.dart';
@@ -42,9 +43,11 @@ class _BloodRequestPageState extends State<BloodRequestPage> {
     getAllBloodRequest();
 
     getAllBloodRequest().then((bloodRequest) {
-      setState(() {
-        _bloodRequest = filteredReqData = bloodRequest;
-      });
+      if (mounted) {
+        setState(() {
+          _bloodRequest = filteredReqData = bloodRequest;
+        });
+      }
     });
   }
 
@@ -52,7 +55,14 @@ class _BloodRequestPageState extends State<BloodRequestPage> {
     setState(() {
       filteredReqData = _bloodRequest
           .where((element) =>
-              element.bloodGroup.toLowerCase().contains(value.toLowerCase()))
+              element.bloodGroup.toLowerCase().contains(value.toLowerCase()) ||
+              element.name.toLowerCase().contains(value.toLowerCase()) ||
+              element.hospitalName
+                  .toLowerCase()
+                  .contains(value.toLowerCase()) ||
+              element.hospitalAddress
+                  .toLowerCase()
+                  .contains(value.toLowerCase()))
           .toList();
     });
   }
@@ -69,7 +79,7 @@ class _BloodRequestPageState extends State<BloodRequestPage> {
               child: IconButton(
                 icon: Icon(
                   Icons.bar_chart_rounded,
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.red,
                   size: 30,
                 ),
                 onPressed: () => Scaffold.of(context).openDrawer(),
@@ -81,14 +91,14 @@ class _BloodRequestPageState extends State<BloodRequestPage> {
         title: !isSearching
             ? Text(
                 'Blood Requests',
-                style: TextStyle(color: Theme.of(context).primaryColor),
+                style: TextStyle(color: Colors.red),
               )
             : TextField(
                 onChanged: (value) {
                   _filterBloodReq(value);
                 },
                 decoration: InputDecoration(
-                    hintText: "Search requests by blood group",
+                    hintText: "Search blood requests",
                     hintStyle: TextStyle(color: Colors.red),
                     icon: Icon(Icons.search,
                         color: Theme.of(context).primaryColor)),
@@ -119,39 +129,52 @@ class _BloodRequestPageState extends State<BloodRequestPage> {
       ),
       body: filteredReqData.isEmpty
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Image.asset('assets/images/notfound.png'),
             )
-          : FutureBuilder(
-              future: getAllBloodRequest(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                      itemCount:
-                          filteredReqData.isEmpty ? 0 : filteredReqData.length,
-                      itemBuilder: (context, index) {
-                        BloodRequest bloodRequest = filteredReqData[index];
-
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(
-                                  () => BloodRequestDetails(
-                                        bloodRequest: bloodRequest,
-                                      ),
-                                  transition: Transition.rightToLeftWithFade);
-                            },
-                            child: BloodRequestCard(bloodRequest: bloodRequest),
-                          ),
-                        );
-                      });
-                } else {
-                  return Center(
-                      child: CircularProgressIndicator(
-                    color: Colors.red,
-                  ));
-                }
+          : RefreshIndicator(
+              onRefresh: () async {
+                getAllBloodRequest().then((bloodRequest) {
+                  setState(() {
+                    _bloodRequest = filteredReqData = bloodRequest;
+                  });
+                });
               },
+              child: FutureBuilder(
+                future: Future.wait(
+                    [getAllBloodRequest(), SessionManager().get('token')]),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        itemCount: filteredReqData.isEmpty
+                            ? 0
+                            : filteredReqData.length,
+                        itemBuilder: (context, index) {
+                          BloodRequest bloodRequest = filteredReqData[index];
+
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(
+                                    () => BloodRequestDetails(
+                                          bloodRequest: bloodRequest,
+                                        ),
+                                    transition: Transition.rightToLeftWithFade);
+                              },
+                              child:
+                                  BloodRequestCard(bloodRequest: bloodRequest),
+                            ),
+                          );
+                        });
+                  } else {
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.red,
+                    ));
+                  }
+                },
+              ),
             ),
     );
   }

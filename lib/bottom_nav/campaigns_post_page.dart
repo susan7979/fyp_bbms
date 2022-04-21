@@ -94,7 +94,7 @@ class _CampaignsPostPageState extends State<CampaignsPostPage> {
                   _filterCampaigns(value);
                 },
                 decoration: InputDecoration(
-                    hintText: "Search donation events by name",
+                    hintText: "Search campaigns by name",
                     hintStyle: TextStyle(color: Colors.red),
                     icon: Icon(Icons.search,
                         color: Theme.of(context).primaryColor)),
@@ -124,29 +124,40 @@ class _CampaignsPostPageState extends State<CampaignsPostPage> {
         backgroundColor: Colors.grey[50],
       ),
       body: filteredCampaignData.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: filteredCampaignData.isEmpty
-                  ? 0
-                  : filteredCampaignData.length,
-              itemBuilder: (context, index) {
-                DonationCampaigns donationCampaign =
-                    filteredCampaignData[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      Get.to(
-                          () => DonationCampaignsDetails(
-                                donationCampaign: donationCampaign,
-                              ),
-                          transition: Transition.rightToLeftWithFade);
-                    },
-                    child: DonationCampaignsCard(
-                        donationCampaign: donationCampaign),
-                  ),
-                );
-              }),
+          ? Center(
+              child: Image.asset('assets/images/notfound.png'),
+            )
+          : RefreshIndicator(
+              onRefresh: () async {
+                getAllCampaigns().then((donationCampaign) {
+                  setState(() {
+                    _donationCampaign = filteredCampaignData = donationCampaign;
+                  });
+                });
+              },
+              child: ListView.builder(
+                  itemCount: filteredCampaignData.isEmpty
+                      ? 0
+                      : filteredCampaignData.length,
+                  itemBuilder: (context, index) {
+                    DonationCampaigns donationCampaign =
+                        filteredCampaignData[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(
+                              () => DonationCampaignsDetails(
+                                    donationCampaign: donationCampaign,
+                                  ),
+                              transition: Transition.rightToLeftWithFade);
+                        },
+                        child: DonationCampaignsCard(
+                            donationCampaign: donationCampaign),
+                      ),
+                    );
+                  }),
+            ),
     );
   }
 }

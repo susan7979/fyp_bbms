@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,7 +8,7 @@ import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/home.dart';
 import 'package:fyp_bbms/main.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
-// import 'package:fyp_bbms/misc/notification_api.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -19,21 +20,9 @@ class PostCampaigns extends StatefulWidget {
 }
 
 class _PostCampaignsState extends State<PostCampaigns> {
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   NotificationApi.init();
-  //   listenNotifications();
-  // }
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  late String token1;
 
-  // void listenNotifications() =>
-  //     NotificationApi.onNotifications.stream.listen(onClickedNotification);
-
-  // void onClickedNotification(String? payload) =>
-  //     Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => HomePage(),
-  //     ));
-  //
   void showNotification() {
     flutterLocalNotificationsPlugin.show(
         1,
@@ -48,6 +37,49 @@ class _PostCampaignsState extends State<PostCampaigns> {
           playSound: true,
           icon: '@mipmap/ic_launcher',
         )));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    firebaseCloudMessagingListeners();
+  }
+
+  void firebaseCloudMessagingListeners() {
+    _firebaseMessaging.getToken().then((token) {
+      print("Token is " + token!);
+      token1 = token;
+      setState(() {});
+    });
+  }
+
+  Future sendNotification() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+                android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher',
+            )));
+      }
+    });
+    final uri = Uri.parse("$rootUrl/bbms_api/fcmDonationCampaign.php");
+    var response = await http.post(uri, body: {
+      "token": token1,
+      "message":
+          "There is a campaign being host at ${_campaignLocation.text} on ${_campaignDate.text}"
+    });
+    return json.decode(response.body);
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -79,12 +111,12 @@ class _PostCampaignsState extends State<PostCampaigns> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => HomePage(),
+      //   ),
+      // );
     } else {
       Fluttertoast.showToast(
           msg: "Post failed!",
@@ -129,7 +161,7 @@ class _PostCampaignsState extends State<PostCampaigns> {
               onTap: () {
                 if (_formKey.currentState!.validate()) {
                   postCampaigns();
-                  showNotification();
+                  sendNotification();
                 }
               },
               child: postCampaignsBtn(),
@@ -155,6 +187,8 @@ class _PostCampaignsState extends State<PostCampaigns> {
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter campaign host name";
@@ -192,6 +226,7 @@ class _PostCampaignsState extends State<PostCampaigns> {
       ),
       child: TextFormField(
         keyboardType: TextInputType.multiline,
+        textCapitalization: TextCapitalization.words,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter your campaign location";
@@ -256,7 +291,6 @@ class _PostCampaignsState extends State<PostCampaigns> {
       padding: EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
-        
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
         boxShadow: [
@@ -265,6 +299,31 @@ class _PostCampaignsState extends State<PostCampaigns> {
         ],
       ),
       child: TextFormField(
+        readOnly: true,
+        onTap: () async {
+          final pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              //DateTime.now() - not to allow to choose before today.
+              lastDate: DateTime(2101));
+
+          if (pickedDate != null) {
+            print(
+                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+            print(
+                formattedDate); //formatted date output using intl package =>  2021-03-16
+            //you can implement different kind of Date Format here according to your requirement
+
+            setState(() {
+              _campaignDate.text =
+                  formattedDate; //set output date to TextField value.
+            });
+          } else {
+            print("Date is not selected");
+          }
+        },
         keyboardType: TextInputType.multiline,
         validator: (value) {
           if (value!.isEmpty) {
@@ -339,13 +398,15 @@ class _PostCampaignsState extends State<PostCampaigns> {
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        textCapitalization: TextCapitalization.sentences,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter campaign description";
           }
           return null;
         },
-        controller: _campaignLocation,
+        controller: _campaignDescription,
         cursorColor: Colors.red,
         decoration: InputDecoration(
           icon: Icon(

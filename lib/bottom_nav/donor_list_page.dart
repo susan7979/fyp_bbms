@@ -27,7 +27,6 @@ class _DonorListPageState extends State<DonorListPage> {
   bool isSearching = false;
 
   Future<List<DonorRegister>> getAllDonorRegister() async {
-    await Future.delayed(Duration(milliseconds: 400));
     try {
       var response = await http.get(Uri.parse(getAllDonorUrl));
       if (response.statusCode == 200) {
@@ -60,7 +59,9 @@ class _DonorListPageState extends State<DonorListPage> {
     setState(() {
       filteredDonorData = _donorRegister
           .where((element) =>
-              element.bloodGroup.toLowerCase().contains(value.toLowerCase()))
+              element.bloodGroup.toLowerCase().contains(value.toLowerCase()) ||
+              element.name.toLowerCase().contains(value.toLowerCase()) ||
+              element.address.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
   }
@@ -96,7 +97,7 @@ class _DonorListPageState extends State<DonorListPage> {
                   _filterDonors(value);
                 },
                 decoration: InputDecoration(
-                    hintText: "Search donors by blood group",
+                    hintText: "Search donors",
                     hintStyle: TextStyle(color: Colors.red),
                     icon: Icon(Icons.search,
                         color: Theme.of(context).primaryColor)),
@@ -126,11 +127,17 @@ class _DonorListPageState extends State<DonorListPage> {
         backgroundColor: Colors.grey[50],
       ),
       body: filteredDonorData.isEmpty
-          ? Center(child: CircularProgressIndicator.adaptive())
-          : RefreshWidget(
-              onRefresh:
-                  context.watch<DonorRegisterProvider>().getAllDonorRegister,
-              keyRefresh: keyRefresh,
+          ? Center(
+              child: Image.asset('assets/images/notfound.png'),
+            )
+          : RefreshIndicator(
+              onRefresh: () async {
+                getAllDonorRegister().then((donorRegister) {
+                  setState(() {
+                    _donorRegister = filteredDonorData = donorRegister;
+                  });
+                });
+              },
               child: ListView.builder(
                   itemCount:
                       filteredDonorData.isEmpty ? 0 : filteredDonorData.length,

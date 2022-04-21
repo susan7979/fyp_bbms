@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -11,6 +12,7 @@ import 'package:fyp_bbms/misc/custom_app_bar.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:latlong2/latlong.dart' as latlng;
 
@@ -22,39 +24,59 @@ class RequestBlood extends StatefulWidget {
 }
 
 class _RequestBloodState extends State<RequestBlood> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  late String token1;
   var _selectedGenderValue;
   var _selectedBloodGroupValue;
   List<String> gender = ['Male', 'Female'];
   List<String> bloodGroup = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   NotificationApi.init();
-  //   listenNotifications();
-  // }
 
-  // void listenNotifications() =>
-  //     NotificationApi.onNotifications.stream.listen(onClickedNotification);
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  LocationData? _userLocation;
 
-  // void onClickedNotification(String? payload) =>
-  //     Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => HomePage(),
-  //     ));
-  //
-  void showNotification() {
-    flutterLocalNotificationsPlugin.show(
-        1,
-        "Emergency blood request!!",
-        "There is an emergency blood request at ${_hospitalName.text} for $_selectedBloodGroupValue",
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          importance: Importance.high,
-          color: Colors.blue,
-          playSound: true,
-          icon: '@mipmap/ic_launcher',
-        )));
+  Future<void> _getUserLocation() async {
+    Location location = Location();
+
+    // Check if location service is enable
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    // Check if permission is granted
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    final _locationData = await location.getLocation();
+    setState(() {
+      _userLocation = _locationData;
+    });
+  }
+
+  @override
+  void initState() {
+    _getUserLocation();
+
+    // TODO: implement initState
+    super.initState();
+    firebaseCloudMessagingListeners();
+  }
+
+  void firebaseCloudMessagingListeners() {
+    _firebaseMessaging.getToken().then((token) {
+      print("Token is " + token!);
+      token1 = token;
+      setState(() {});
+    });
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -69,8 +91,38 @@ class _RequestBloodState extends State<RequestBlood> {
   final TextEditingController _bloodAmount = TextEditingController();
   final TextEditingController _reason = TextEditingController();
   final String _postTime = DateFormat.yMEd().add_jms().format(DateTime.now());
+
   final bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   String? value;
+
+  Future sendNotification() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+                android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher',
+            )));
+      }
+    });
+
+    final uri = Uri.parse("$rootUrl/bbms_api/fcmBloodRequest.php");
+    var response = await http.post(uri, body: {
+      "token": token1,
+      "message":
+          "There is an emergency blood request at ${_hospitalName.text},${_hospitalAddress.text} for $_selectedBloodGroupValue"
+    });
+    return json.decode(response.body);
+  }
 
   Future requestBlood() async {
     var url = Uri.parse(postBloodRequestUrl);
@@ -86,6 +138,8 @@ class _RequestBloodState extends State<RequestBlood> {
       "blood_amount": _bloodAmount.text,
       "reason": _reason.text,
       "post_time": _postTime,
+      "latitude": _userLocation!.latitude.toString(),
+      "longitude": _userLocation!.longitude.toString(),
     });
     var data = await json.decode(response.body);
     print(data);
@@ -98,12 +152,12 @@ class _RequestBloodState extends State<RequestBlood> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => HomePage(),
+      //   ),
+      // );
     } else {
       Fluttertoast.showToast(
           msg: "Blood request failed!",
@@ -125,15 +179,6 @@ class _RequestBloodState extends State<RequestBlood> {
         child: ListView(
           padding: EdgeInsets.all(16),
           children: [
-            // TextFormField(
-            //   textCapitalization: TextCapitalization.words,
-            //   controller: _name,
-            //   decoration: const InputDecoration(
-            //       // contentPadding: EdgeInsets.all(8),
-            //       icon: Icon(Icons.person),
-            //       hintText: 'Enter your name',
-            //       labelText: "Name"),
-            // ),
             nameTextField(),
             genderTextField(),
             ageTextField(),
@@ -141,60 +186,15 @@ class _RequestBloodState extends State<RequestBlood> {
             hospitalNameFormField(),
             hospitalAddressFormField(),
             phoneTextField(),
-            bloodGroupTextField(),
+            bloodGroupDropDownField(),
             bloodAmountTextField(),
             reasonTextField(),
-            Container(
-              height: 100,
-              width: 100,
-              child: FlutterMap(
-                options: MapOptions(
-                  center: latlng.LatLng(51.5, -0.09),
-                  zoom: 13.0,
-                ),
-                layers: [
-                  TileLayerOptions(
-                    urlTemplate:
-                        "https://api.mapbox.com/styles/v1/susan7979/cl1h7cdie00kc15muoyf682jg/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic3VzYW43OTc5IiwiYSI6ImNsMWg3ODVhczA0OG8zY3BibWJqNjdqcXcifQ.F4XVYsX5nPV1wSVugbRDKw",
-                    additionalOptions: {
-                      'accessToken':
-                          'pk.eyJ1Ijoic3VzYW43OTc5IiwiYSI6ImNsMWg3ODVhczA0OG8zY3BibWJqNjdqcXcifQ.F4XVYsX5nPV1wSVugbRDKw',
-                      'id': 'mapbox.mapbox-streets-v8'
-                    },
-                    attributionBuilder: (_) {
-                      return Text("© OpenStreetMap contributors");
-                    },
-                  ),
-                  MarkerLayerOptions(
-                    markers: [
-                      Marker(
-                        width: 80.0,
-                        height: 80.0,
-                        point: latlng.LatLng(51.5, -0.09),
-                        builder: (ctx) => Container(
-                          child: FlutterLogo(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
 
             const SizedBox(
               height: 40,
             ),
             // ElevatedButton(onPressed: () {}, child: Text('Request for blood')),
-            GestureDetector(
-              onTap: () {
-                if (_formKey.currentState!.validate()) {
-                  requestBlood();
-
-                  showNotification();
-                }
-              },
-              child: requestBloodBtn(),
-            ),
+            requestBloodBtn(),
           ],
         ),
       ),
@@ -216,6 +216,8 @@ class _RequestBloodState extends State<RequestBlood> {
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter your name";
@@ -324,6 +326,8 @@ class _RequestBloodState extends State<RequestBlood> {
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter your hospital name";
@@ -360,7 +364,9 @@ class _RequestBloodState extends State<RequestBlood> {
         ],
       ),
       child: TextFormField(
-        keyboardType: TextInputType.multiline,
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
+        // keyboardType: TextInputType.multiline,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter your hospital address";
@@ -397,6 +403,7 @@ class _RequestBloodState extends State<RequestBlood> {
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter your phone number";
@@ -423,7 +430,7 @@ class _RequestBloodState extends State<RequestBlood> {
       alignment: Alignment.center,
       margin: EdgeInsets.only(left: 20, right: 20, top: 20),
       padding: EdgeInsets.only(left: 20, right: 20),
-      height: 54,
+      height: 65,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Color(0xffEEEEEE),
@@ -433,6 +440,12 @@ class _RequestBloodState extends State<RequestBlood> {
         ],
       ),
       child: DropdownButtonFormField(
+        validator: (value) {
+          if (value == null) {
+            return "Please specify your gender";
+          }
+          return null;
+        },
         value: _selectedGenderValue,
         hint: Text(
           'Choose your gender',
@@ -460,12 +473,12 @@ class _RequestBloodState extends State<RequestBlood> {
     );
   }
 
-  Widget bloodGroupTextField() {
+  Widget bloodGroupDropDownField() {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(left: 20, right: 20, top: 20),
       padding: EdgeInsets.only(left: 20, right: 20),
-      height: 54,
+      height: 65,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Color(0xffEEEEEE),
@@ -475,6 +488,12 @@ class _RequestBloodState extends State<RequestBlood> {
         ],
       ),
       child: DropdownButtonFormField(
+        validator: (value) {
+          if (value == null) {
+            return "Please select one";
+          }
+          return null;
+        },
         value: _selectedBloodGroupValue,
         hint: Text(
           'Choose your blood group',
@@ -575,29 +594,41 @@ class _RequestBloodState extends State<RequestBlood> {
   }
 
   Widget requestBloodBtn() {
-    return Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(
-        left: 20,
-        right: 20,
-      ),
-      padding: EdgeInsets.only(left: 20, right: 20),
-      height: 54,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            colors: [Colors.red, Colors.redAccent],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight),
-        borderRadius: BorderRadius.circular(50),
-        color: Colors.grey[200],
-        boxShadow: [
-          BoxShadow(
-              offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
-        ],
-      ),
-      child: Text(
-        "Request for blood",
-        style: TextStyle(color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        if (_formKey.currentState!.validate()) {
+          requestBlood();
+
+          // showNotification();
+          sendNotification();
+        }
+      },
+      child: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(
+          left: 20,
+          right: 20,
+        ),
+        padding: EdgeInsets.only(left: 20, right: 20),
+        height: 54,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.red, Colors.redAccent],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight),
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.grey[200],
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(0, 10),
+                blurRadius: 50,
+                color: Color(0xffEEEEEE)),
+          ],
+        ),
+        child: Text(
+          "Request for blood",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

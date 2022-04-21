@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:ffi';
+
 List<NearbyOrganizationsModel> nearbyOrganizationsModelFromJson(String str) =>
     List<NearbyOrganizationsModel>.from(
         json.decode(str).map((x) => NearbyOrganizationsModel.fromJson(x)));
@@ -14,6 +16,8 @@ class NearbyOrganizationsModel {
     required this.location,
     required this.email,
     required this.phoneNumber,
+    required this.latitude,
+    required this.longitude,
   });
 
   String name;
@@ -21,6 +25,8 @@ class NearbyOrganizationsModel {
   String location;
   String email;
   String phoneNumber;
+  String latitude;
+  String longitude;
 
   factory NearbyOrganizationsModel.fromJson(Map<String, dynamic> json) =>
       NearbyOrganizationsModel(
@@ -29,6 +35,8 @@ class NearbyOrganizationsModel {
         location: json["location"],
         email: json["email"],
         phoneNumber: json["phone_number"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -38,5 +46,7 @@ class NearbyOrganizationsModel {
         "location": location,
         "email": email,
         "phone_number": phoneNumber,
+        "latitude": latitude,
+        "longitude": longitude,
       };
 }

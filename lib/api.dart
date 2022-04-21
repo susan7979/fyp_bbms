@@ -14,3 +14,6 @@ const String postCampaignsUrl =
 const String getAllBloodRequestUrl = "$rootUrl/$folder/blood_requests.php";
 const String getAllDonorUrl = "$rootUrl/$folder/donor_register.php";
 const String getAllCampaignsUrl = "$rootUrl/$folder/donation_campaigns.php";
+const String updateDonatedDateUrl =
+    "$rootUrl/$folder/user_dashboard/update_donated_date.php";
+const String bloodStockUrl = "$rootUrl/bbms_api/blood_stocks.php";

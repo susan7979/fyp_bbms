@@ -50,12 +50,19 @@ class _BloodRequestCardState extends State<BloodRequestCard> {
                       border: Border(
                           right:
                               BorderSide(width: 1.0, color: Colors.white24))),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.red,
-                    child: Text(
-                      widget.bloodRequest.bloodGroup,
-                      style: TextStyle(fontSize: 16),
+                  child: Container(
+                    height: 200,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [],
+                    ),
+                    child: Center(
+                      child: Text(
+                        widget.bloodRequest.bloodGroup,
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
@@ -94,10 +101,10 @@ class _BloodRequestCardState extends State<BloodRequestCard> {
                           widget.bloodRequest.hospitalAddress,
                           style: TextStyle(fontSize: 18),
                         ),
-                        // Text(
-                        //   widget.bloodRequest.phoneNumber,
-                        //   style: TextStyle(fontSize: 18),
-                        // ),
+                        Text(
+                          widget.bloodRequest.gender,
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ],
                     ),
                   ),

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:fyp_bbms/misc/khalti_main.dart';
 import 'package:fyp_bbms/models/nearby_organization_model.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class NearbyOrganizationDetails extends StatelessWidget {
+class NearbyOrganizationDetails extends StatefulWidget {
   final NearbyOrganizationsModel nearbyOrganizationsModel;
 
   const NearbyOrganizationDetails(
@@ -13,98 +14,29 @@ class NearbyOrganizationDetails extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<NearbyOrganizationDetails> createState() =>
+      _NearbyOrganizationDetailsState();
+}
+
+class _NearbyOrganizationDetailsState extends State<NearbyOrganizationDetails> {
+  @override
+  static Future<void> openMap(double latitude, double longitude) async {
+    final String googleUrl =
+        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+    if (await canLaunch(googleUrl)) {
+      await launch(
+        googleUrl,
+      );
+    } else {
+      print('Could not launch $googleUrl');
+      throw 'Could not launch $googleUrl';
+    }
+  }
+
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: CustomAppBar(title: name),
-    //   floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    //   floatingActionButton: FloatingActionButton.extended(
-    //     backgroundColor: Colors.red.shade800,
-    //     icon: const Icon(Icons.payment),
-    //     label: Text('Donate'),
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(12),
-    //     ),
-    //     onPressed: () {
-    //       Navigator.of(context).push(MaterialPageRoute(
-    //         builder: (context) => KhaltiPaymentApp(),
-    //       ));
-    //     },
-    //   ),
-    //   body: Padding(
-    //     padding: const EdgeInsets.all(20.0),
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.start,
-    //       crossAxisAlignment: CrossAxisAlignment.stretch,
-    //       children: [
-    //         Card(
-    //           child: Padding(
-    //             padding: const EdgeInsets.all(5.0),
-    //             child: Text(
-    //               name,
-    //               style: TextStyle(
-    //                 fontWeight: FontWeight.bold,
-    //                 fontSize: 20,
-    //               ),
-    //             ),
-    //           ),
-    //           color: Colors.red[200],
-    //         ),
-    //         Card(
-    //           child: Padding(
-    //             padding: const EdgeInsets.all(5.0),
-    //             child: Text(
-    //               establishedDate,
-    //               style: TextStyle(
-    //                 fontWeight: FontWeight.bold,
-    //                 fontSize: 20,
-    //               ),
-    //             ),
-    //           ),
-    //           color: Colors.red[400],
-    //         ),
-    //         Card(
-    //           child: Padding(
-    //             padding: const EdgeInsets.all(5.0),
-    //             child: Text(
-    //               location,
-    //               style: TextStyle(
-    //                 fontWeight: FontWeight.bold,
-    //                 fontSize: 20,
-    //               ),
-    //             ),
-    //           ),
-    //           color: Colors.red[400],
-    //         ),
-    //         Card(
-    //           child: Padding(
-    //             padding: const EdgeInsets.all(5.0),
-    //             child: Text(
-    //               email,
-    //               style: TextStyle(
-    //                 fontWeight: FontWeight.bold,
-    //                 fontSize: 20,
-    //               ),
-    //             ),
-    //           ),
-    //           color: Colors.red[400],
-    //         ),
-    //         Card(
-    //           child: Padding(
-    //             padding: const EdgeInsets.all(5.0),
-    //             child: Text(
-    //               phoneNumber,
-    //               style: TextStyle(
-    //                 fontWeight: FontWeight.bold,
-    //                 fontSize: 20,
-    //               ),
-    //             ),
-    //           ),
-    //           color: Colors.red[400],
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
+    double latitude = double.parse(widget.nearbyOrganizationsModel.latitude);
+    double longitude = double.parse(widget.nearbyOrganizationsModel.longitude);
+
     final double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -204,10 +136,11 @@ class NearbyOrganizationDetails extends StatelessWidget {
                         style: TextStyle(fontSize: 24, color: Colors.red),
                       ),
                       Text(
-                        nearbyOrganizationsModel.name,
+                        widget.nearbyOrganizationsModel.name,
                         style: TextStyle(fontSize: 30),
                       ),
-                      Text("ESTD: ${nearbyOrganizationsModel.establishedDate}"),
+                      Text(
+                          "ESTD: ${widget.nearbyOrganizationsModel.establishedDate}"),
                     ],
                   ),
 
@@ -226,13 +159,29 @@ class NearbyOrganizationDetails extends StatelessWidget {
                             IconButton(
                                 onPressed: () {
                                   launch(
-                                      'mailto:${nearbyOrganizationsModel.email}');
+                                      'mailto:${widget.nearbyOrganizationsModel.email}');
                                 },
                                 icon: Icon(
-                                  Icons.mail,
+                                  Icons.email,
                                   color: Colors.red,
                                   size: 40,
                                 )),
+                            Text("Mail"),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                                onPressed: () async {
+                                  openMap(latitude, longitude);
+                                },
+                                icon: Icon(
+                                  Icons.pin_drop_sharp,
+                                  color: Colors.blue,
+                                  size: 40,
+                                )),
+                            Text("Location"),
                           ],
                         ),
                         Row(
@@ -241,13 +190,14 @@ class NearbyOrganizationDetails extends StatelessWidget {
                             IconButton(
                                 onPressed: () {
                                   launch(
-                                      'tel:${nearbyOrganizationsModel.phoneNumber}');
+                                      'tel:${widget.nearbyOrganizationsModel.phoneNumber}');
                                 },
                                 icon: Icon(
                                   Icons.phone,
                                   color: Colors.green,
                                   size: 40,
                                 )),
+                            Text("Call"),
                           ],
                         ),
                         // Row(

@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp_bbms/auth/login.dart';
 import 'package:fyp_bbms/api.dart';
@@ -21,6 +23,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   PickedFile? image;
+  // PickedFile image1 = PickedFile('assets/images/register.png');
   final ImagePicker _picker = ImagePicker();
   // final XFile _imageFile = XFile();
   final TextEditingController _email = TextEditingController();
@@ -66,7 +69,7 @@ class _RegisterState extends State<Register> {
       //   "blood_group": _selectedBloodGroupValue,
       // });
       // var link = json.decode(response.body);
-      final uri = Uri.parse("http://192.168.1.79/bbms_api/register.php");
+      final uri = Uri.parse("$rootUrl/bbms_api/register.php");
       var request = http.MultipartRequest('POST', uri);
       request.fields['username'] = _email.text;
       request.fields['password'] = _pass.text;
@@ -80,17 +83,13 @@ class _RegisterState extends State<Register> {
       request.files.add(pic);
       // var link = json.decode(request.method);
       var response1 = await request.send();
+      final responseData = await response1.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
 
-      if (response1.statusCode == 200) {
-        Fluttertoast.showToast(
-            msg: "Check your mail and verify",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
+      print(response1);
+      print(responseString);
+
+      if (responseString == '"Error"') {
         Fluttertoast.showToast(
             msg: "This user already exist",
             toastLength: Toast.LENGTH_SHORT,
@@ -99,21 +98,32 @@ class _RegisterState extends State<Register> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Registration completed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => Login()));
       }
 
       // print('susan');
 
-      setState(() {
-        verifyButton = true;
-        Fluttertoast.showToast(
-            msg: "Check your mail and verify",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      });
+      // setState(() {
+      //   verifyButton = true;
+      //   Fluttertoast.showToast(
+      //       msg: "Check your mail and verify",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.CENTER,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // });
       sendMail();
 
       // if (link == "Error") {
@@ -153,6 +163,20 @@ class _RegisterState extends State<Register> {
     }
   }
 
+  String? validatePassword(String? value) {
+    RegExp regex =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    if (value!.isEmpty) {
+      return 'Please enter password';
+    } else {
+      if (!regex.hasMatch(value)) {
+        return 'Enter valid password';
+      } else {
+        return null;
+      }
+    }
+  }
+
   Future verify() async {
     var response = await http.post(Uri.parse(verifyLink));
 
@@ -181,7 +205,7 @@ class _RegisterState extends State<Register> {
 
     final message = Message()
       ..from = Address(username, 'Susan Gautam')
-      ..recipients.add('${_email.text}')
+      ..recipients.add(_email.text)
       ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
       ..html =
           "<h1>Verify your mail</h1>\n<p>Verify your mail and access your app</p><p> <a href='$verifyLink'>Click here to verify</a></p>";
@@ -189,7 +213,7 @@ class _RegisterState extends State<Register> {
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
-    } on MailerException catch (e) {
+    } on MailerException {
       print('Message not sent.');
     }
   }
@@ -204,7 +228,7 @@ class _RegisterState extends State<Register> {
         children: [
           Container(
             height: 300,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
               color: Colors.red,
               gradient: LinearGradient(
@@ -222,7 +246,7 @@ class _RegisterState extends State<Register> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 50),
+                  margin: const EdgeInsets.only(top: 50),
                   child: Image.asset(
                     "assets/images/launch_image.png",
                     height: 90,
@@ -230,9 +254,17 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(right: 20, top: 20),
+                    margin: const EdgeInsets.only(top: 10),
+                    child: const Text("BloodSource",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ))),
+                Container(
+                  margin: const EdgeInsets.only(right: 20, top: 20),
                   alignment: Alignment.bottomRight,
-                  child: Text(
+                  child: const Text(
                     "Register",
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
@@ -240,7 +272,7 @@ class _RegisterState extends State<Register> {
               ],
             )),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           GestureDetector(
@@ -251,11 +283,12 @@ class _RegisterState extends State<Register> {
             child: Stack(
               children: [
                 CircleAvatar(
+                  backgroundColor: Colors.red[100],
                   radius: 60,
                   backgroundImage:
                       image == null ? null : FileImage(File(image!.path)),
                 ),
-                Positioned(
+                const Positioned(
                   bottom: 15,
                   right: 15,
                   child: Icon(
@@ -267,6 +300,9 @@ class _RegisterState extends State<Register> {
               ],
             ),
           ),
+          image == null
+              ? const Text("Choose your profile picture")
+              : const Text(''),
           emailTextField(),
           passwordTextFormField(),
           rePasswordTextField(),
@@ -287,17 +323,17 @@ class _RegisterState extends State<Register> {
     return Container(
       height: 100,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
       ),
       child: Column(
         children: [
-          Text(
+          const Text(
             "Choose a profile photo",
             style: TextStyle(fontSize: 20.0),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -307,13 +343,13 @@ class _RegisterState extends State<Register> {
                 onPressed: () {
                   choiceImage();
                 },
-                icon: Icon(Icons.camera_alt),
+                icon: const Icon(Icons.camera_alt),
               ),
               IconButton(
                 onPressed: () {
                   choiceImage();
                 },
-                icon: Icon(Icons.image),
+                icon: const Icon(Icons.image),
               ),
             ],
           )
@@ -331,13 +367,13 @@ class _RegisterState extends State<Register> {
   Widget emailTextField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 40),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 40),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
         ],
@@ -351,7 +387,7 @@ class _RegisterState extends State<Register> {
         },
         controller: _email,
         cursorColor: Colors.red,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(
             Icons.email,
             color: Colors.red,
@@ -367,28 +403,23 @@ class _RegisterState extends State<Register> {
   Widget passwordTextFormField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: Color(0xffEEEEEE),
-        boxShadow: [
+        color: const Color(0xffEEEEEE),
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
         ],
       ),
       child: TextFormField(
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Please enter your password";
-          }
-          return null;
-        },
+        validator: validatePassword,
         controller: _pass,
         obscureText: true,
-        cursorColor: Color(0xffF5591F),
-        decoration: InputDecoration(
+        cursorColor: const Color(0xffF5591F),
+        decoration: const InputDecoration(
           focusColor: Color(0xffF5591F),
           icon: Icon(
             Icons.vpn_key,
@@ -405,13 +436,13 @@ class _RegisterState extends State<Register> {
   Widget rePasswordTextField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: Color(0xffEEEEEE),
-        boxShadow: [
+        color: const Color(0xffEEEEEE),
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
         ],
@@ -421,11 +452,14 @@ class _RegisterState extends State<Register> {
           if (value!.isEmpty) {
             return "Please re-enter your password";
           }
+          if (value != _pass.text) {
+            return "Passwords didnt match";
+          }
           return null;
         },
         obscureText: true,
-        cursorColor: Color(0xffF5591F),
-        decoration: InputDecoration(
+        cursorColor: const Color(0xffF5591F),
+        decoration: const InputDecoration(
           focusColor: Color(0xffF5591F),
           icon: Icon(
             Icons.vpn_key,
@@ -442,18 +476,20 @@ class _RegisterState extends State<Register> {
   Widget nameTextField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter your name";
@@ -462,7 +498,7 @@ class _RegisterState extends State<Register> {
         },
         controller: _name,
         cursorColor: Colors.red,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(
             Icons.person,
             color: Colors.red,
@@ -478,18 +514,19 @@ class _RegisterState extends State<Register> {
   Widget ageTextField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please enter your age";
@@ -498,7 +535,7 @@ class _RegisterState extends State<Register> {
         },
         controller: _age,
         cursorColor: Colors.red,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(
             Icons.numbers,
             color: Colors.red,
@@ -514,18 +551,20 @@ class _RegisterState extends State<Register> {
   Widget addressFormField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
         ],
       ),
       child: TextFormField(
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please your address";
@@ -534,9 +573,9 @@ class _RegisterState extends State<Register> {
         },
         controller: _address,
         cursorColor: Colors.red,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(
-            Icons.phone,
+            Icons.location_on,
             color: Colors.red,
           ),
           hintText: "Enter your address ",
@@ -550,18 +589,20 @@ class _RegisterState extends State<Register> {
   Widget phoneTextField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 54,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 10), blurRadius: 50, color: Color(0xffEEEEEE)),
         ],
       ),
       child: TextFormField(
+        maxLength: 10,
+        maxLengthEnforcement: MaxLengthEnforcement.enforced,
         validator: (value) {
           if (value!.isEmpty) {
             return "Please your phone number";
@@ -570,7 +611,7 @@ class _RegisterState extends State<Register> {
         },
         controller: _phoneNumber,
         cursorColor: Colors.red,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(
             Icons.phone,
             color: Colors.red,
@@ -586,20 +627,26 @@ class _RegisterState extends State<Register> {
   Widget genderTextField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
-      height: 54,
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      height: 65,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: Color(0xffEEEEEE),
-        boxShadow: [
+        color: const Color(0xffEEEEEE),
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
         ],
       ),
       child: DropdownButtonFormField(
+        validator: (value) {
+          if (value == null) {
+            return "Please select one";
+          }
+          return null;
+        },
         value: _selectedGenderValue,
-        hint: Text(
+        hint: const Text(
           'Choose your gender',
         ),
         isExpanded: true,
@@ -628,20 +675,26 @@ class _RegisterState extends State<Register> {
   Widget bloodGroupTextField() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
-      height: 54,
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      height: 65,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        color: Color(0xffEEEEEE),
-        boxShadow: [
+        color: const Color(0xffEEEEEE),
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 20), blurRadius: 100, color: Color(0xffEEEEEE)),
         ],
       ),
       child: DropdownButtonFormField(
+        validator: (value) {
+          if (value == null) {
+            return "Please select one";
+          }
+          return null;
+        },
         value: _selectedBloodGroupValue,
-        hint: Text(
+        hint: const Text(
           'Choose your blood group',
         ),
         isExpanded: true,
@@ -670,6 +723,16 @@ class _RegisterState extends State<Register> {
   Widget registerButton() {
     return GestureDetector(
       onTap: () {
+        if (image == null) {
+          Fluttertoast.showToast(
+              msg: "Please pick a image",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }
         if (_formKey.currentState!.validate()) {
           register();
           // uploadImage();
@@ -680,24 +743,24 @@ class _RegisterState extends State<Register> {
       },
       child: Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.only(left: 20, right: 20, top: 70),
-        padding: EdgeInsets.only(left: 20, right: 20),
+        margin: const EdgeInsets.only(left: 20, right: 20, top: 70),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         height: 54,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
               colors: [Colors.red, Colors.redAccent],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight),
           borderRadius: BorderRadius.circular(50),
           color: Colors.grey[200],
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
                 offset: Offset(0, 10),
                 blurRadius: 50,
                 color: Color(0xffEEEEEE)),
           ],
         ),
-        child: Text(
+        child: const Text(
           "REGISTER",
           style: TextStyle(color: Colors.white),
         ),
@@ -707,13 +770,13 @@ class _RegisterState extends State<Register> {
 
   Widget alreadyHaveAccount() {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 10, 0, 30),
+      margin: const EdgeInsets.fromLTRB(0, 10, 0, 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Already have an account?  "),
+          const Text("Already have an account?  "),
           GestureDetector(
-            child: Text(
+            child: const Text(
               "Login Now",
               style: TextStyle(color: Color(0xffF5591F)),
             ),
@@ -722,7 +785,7 @@ class _RegisterState extends State<Register> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Login(),
+                    builder: (context) => const Login(),
                   ));
             },
           )

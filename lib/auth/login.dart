@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp_bbms/auth/forget_password.dart';
 import 'package:fyp_bbms/api.dart';
@@ -25,246 +26,286 @@ class _LoginState extends State<Login> {
   final TextEditingController _pass = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  savePref(int value, String username, int id) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    preferences.setInt("value", value);
-
-    preferences.setString("username", username);
-    preferences.setString("id", id.toString());
-    preferences.commit();
+  String? validatePassword(String? value) {
+    RegExp regex =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    if (value!.isEmpty) {
+      return 'Please enter password';
+    } else {
+      if (!regex.hasMatch(value)) {
+        return 'Enter valid password';
+      } else {
+        return null;
+      }
+    }
   }
 
-  Future login() async {
-    var url = Uri.parse(loginUrl);
-    final response = await http.post(url, body: {
-      "username": _user.text,
-      "password": _pass.text,
-    });
-    var data = json.decode(response.body);
-
-    print(response.statusCode);
-
-    if (data == "Success") {
-      Fluttertoast.showToast(
-          msg: "Login Succesfull!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
-
-      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //   builder: (BuildContext context) => HomePage(),
-      // ));
-    } else {
-      Fluttertoast.showToast(
-          msg: "Login failed!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
+  @override
+  void dispose() {
+    _user.dispose();
+    _pass.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-          child: Column(
-        children: [
-          Container(
-            height: 300,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
-              color: Colors.red,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.red,
-                  Colors.redAccent,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+        backgroundColor: Colors.red,
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 200.0,
+                child: ClipPath(
+                  clipper: MyClipper(),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 540.0,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0)),
+                  ),
+                ),
               ),
-            ),
-            child: Center(
+              Positioned(
+                top: 80.0,
+                left: MediaQuery.of(context).size.width - 170.0,
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 50),
-                  child: Image.asset(
-                    "assets/images/launch_image.png",
-                    height: 90,
-                    width: 90,
+                  children: <Widget>[
+                    Container(
+                      width: 130.0,
+                      height: 130.0,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/launch_image.png'))),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            'BloodSource',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0),
+                          ),
+                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 4.0, left: 5.0),
+                        //   child: Text(
+                        //     '',
+                        //     style: TextStyle(
+                        //         color: Colors.white,
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 25.0),
+                        //   ),
+                        // ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Form(
+                key: _formKey,
+                child: Positioned(
+                  top: 290.0,
+                  left: 40.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Welcome to',
+                        style: TextStyle(color: Colors.black, fontSize: 20.0),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              'BloodSource',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0),
+                            ),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 4.0, left: 5.0),
+                          //   child: Text(
+                          //     'Save Lives',
+                          //     style: TextStyle(
+                          //         color: Colors.red,
+                          //         fontWeight: FontWeight.w800,
+                          //         fontSize: 12.0),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          'Please sign in to continue',
+                          style: TextStyle(color: Colors.black, fontSize: 15.0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Container(
+                          width: 265.0,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter your email";
+                              }
+                              return null;
+                            },
+                            controller: _user,
+                            decoration: InputDecoration(
+                                labelText: 'Email',
+                                hintText: 'Enter your email',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                prefixIcon: Icon(
+                                  Icons.email,
+                                  color: Colors.grey,
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0))),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+                          width: 265.0,
+                          child: TextFormField(
+                            obscureText: true,
+                            validator: validatePassword,
+                            controller: _pass,
+                            decoration: InputDecoration(
+                                labelText: 'Password',
+                                hintText: 'Enter your password',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                prefixIcon: Icon(
+                                  Icons.security,
+                                  color: Colors.grey,
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0))),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ForgetPassword()));
+                          },
+                          child: Text("Forget Password?"),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: Row(
+                          children: [
+                            Text("Don't Have Any Account?  "),
+                            Container(
+                              width: 100.0,
+                              height: 40.0,
+                              child: RaisedButton(
+                                splashColor: Colors.yellow,
+                                color: Colors.blue,
+                                padding: EdgeInsets.all(12.0),
+                                shape: StadiumBorder(),
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => Register()));
+                                },
+                                child: Text(
+                                  'REGISTER',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(right: 20, top: 20),
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                )
-              ],
-            )),
-          ),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(left: 20, right: 20, top: 70),
-            padding: EdgeInsets.only(left: 20, right: 20),
-            height: 54,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Colors.grey[200],
-              boxShadow: [
-                BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 50,
-                    color: Color(0xffEEEEEE)),
-              ],
-            ),
-            child: TextFormField(
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Please enter your email";
-                }
-                return null;
-              },
-              controller: _user,
-              cursorColor: Colors.red,
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.email,
-                  color: Colors.red,
-                ),
-                hintText: "Enter Email",
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
               ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-            padding: EdgeInsets.only(left: 20, right: 20),
-            height: 54,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Color(0xffEEEEEE),
-              boxShadow: [
-                BoxShadow(
-                    offset: Offset(0, 20),
-                    blurRadius: 100,
-                    color: Color(0xffEEEEEE)),
-              ],
-            ),
-            child: TextFormField(
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Please enter your password";
-                }
-                return null;
-              },
-              controller: _pass,
-              obscureText: true,
-              cursorColor: Color(0xffF5591F),
-              decoration: InputDecoration(
-                focusColor: Color(0xffF5591F),
-                icon: Icon(
-                  Icons.vpn_key,
-                  color: Colors.red,
-                ),
-                hintText: "Enter Password",
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ForgetPassword()));
-              },
-              child: Text("Forget Password?"),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              if (_formKey.currentState!.validate()) {
-                Provider.of<AuthProvider>(context, listen: false).login(
-                  _user.text,
-                  _pass.text,
-                );
-                context.read<AuthProvider>().userName = _user.text;
+              Positioned(
+                top: MediaQuery.of(context).size.height / 2 + 130.0,
+                left: MediaQuery.of(context).size.width - 200.0,
+                child: Container(
+                  width: 100.0,
+                  height: 40.0,
+                  child: RaisedButton(
+                    splashColor: Colors.yellow,
+                    color: Colors.blue,
+                    padding: EdgeInsets.all(12.0),
+                    shape: StadiumBorder(),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Provider.of<AuthProvider>(context, listen: false).login(
+                          _user.text,
+                          _pass.text,
+                        );
+                        context.read<AuthProvider>().userName = _user.text;
 
-                // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //   builder: (BuildContext context) => HomePage(),
-                // ));
+                        // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        //   builder: (BuildContext context) => HomePage(),
+                        // ));
 
-                // login();
-              }
-            },
-            child: Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 20, right: 20, top: 70),
-              padding: EdgeInsets.only(left: 20, right: 20),
-              height: 54,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.red, Colors.redAccent],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight),
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.grey[200],
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(0, 10),
-                      blurRadius: 50,
-                      color: Color(0xffEEEEEE)),
-                ],
-              ),
-              child: Text(
-                "LOGIN",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Don't Have Any Account?  "),
-                GestureDetector(
-                  child: Text(
-                    "Register Now",
-                    style: TextStyle(color: Color(0xffF5591F)),
+                        // login();
+                      }
+                    },
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                  onTap: () {
-                    // Write Tap Code Here.
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Register(),
-                        ));
-                  },
-                )
-              ],
-            ),
-          )
-        ],
-      )),
-    ));
+                ),
+              )
+            ],
+          ),
+        ));
   }
+}
+
+class MyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0.0, size.height - 80.0);
+
+    var firstControlPoint = new Offset(50.0, size.height);
+    var firstEndPoint = new Offset(size.width / 3.5, size.height - 45.0);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
+
+    path.lineTo(size.width - 30.0, size.height / 2);
+
+    var secondControlPoint =
+        new Offset(size.width + 15.0, size.height / 2 - 60.0);
+    var secondEndPoint = new Offset(140.0, 50.0);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
+
+    var thirdControlPoint = new Offset(50.0, 0.0);
+    var thirdEndPoint = new Offset(0.0, 100.0);
+    path.quadraticBezierTo(thirdControlPoint.dx, thirdControlPoint.dy,
+        thirdEndPoint.dx, thirdEndPoint.dy);
+
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
