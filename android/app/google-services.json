@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "205581574801",
+    "project_id": "bbms-be77b",
+    "storage_bucket": "bbms-be77b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205581574801:android:11fb9c8575b129efb2d530",
+        "android_client_info": {
+          "package_name": "com.example.fyp_bbms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205581574801-753sqvt4dj7cjgfo589s9e70lm30i95u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB87rFTWqVJ2JeOmAweuiItZtPh0BiH8eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205581574801-753sqvt4dj7cjgfo589s9e70lm30i95u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

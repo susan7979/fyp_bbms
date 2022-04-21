@@ -1,44 +1,51 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NotificationApi {
-  static final _notifications = FlutterLocalNotificationsPlugin();
-  static final onNotifications = BehaviorSubject<String?>();
-  static Future _notificationDetails() async {
-    return NotificationDetails(
-        android: AndroidNotificationDetails(
-          'channel id',
-          'channel name',
-          icon: "@drawable/launch_image",
-          priority: Priority.max,
-          importance: Importance.max,
-          enableVibration: true,
-        ),
-        iOS: IOSNotificationDetails());
+class NotificationApi extends StatefulWidget {
+  const NotificationApi({Key? key}) : super(key: key);
+
+  @override
+  State<NotificationApi> createState() => _NotificationApiState();
+}
+
+class _NotificationApiState extends State<NotificationApi> {
+  AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high-importance_channel',
+    'High Importance Notifications',
+    importance: Importance.high,
+    playSound: true,
+  );
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    await Firebase.initializeApp();
+    print('A bg message just showed up: ${message.messageId}');
   }
 
-  static Future init({bool initScheduled = false}) async {
-    final android = AndroidInitializationSettings('@mipmap/launch_image');
-    final iOS = IOSInitializationSettings();
-    final settings = InitializationSettings(android: android, iOS: iOS);
-    await _notifications.initialize(settings,
-        onSelectNotification: (payload) async {
-      onNotifications.add(payload);
-    });
+  Future<void> main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
-  static Future showNotification({
-    int id = 0,
-    String? title,
-    String? body,
-    String? payload,
-  }) async =>
-      _notifications.show(
-        id,
-        title,
-        body,
-        await _notificationDetails(),
-        payload: payload,
-      );
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }

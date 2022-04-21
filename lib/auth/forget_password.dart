@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fyp_bbms/api.dart';
 import 'package:fyp_bbms/misc/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
@@ -21,11 +22,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   String verifyLinkPass = '';
 
   Future checkUser() async {
-    var response = await http.post(
-        Uri.parse('http://192.168.1.79/flutter-login-signup/check.php'),
-        body: {
-          "username": _user.text,
-        });
+    var response = await http.post(Uri.parse(forgotPasswordUrl), body: {
+      "username": _user.text,
+    });
     var linkPass = json.decode(response.body);
     if (linkPass == "INVALIDUSER") {
       Fluttertoast.showToast(
@@ -105,33 +104,39 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const Text(
-              "Enter your email",
-              style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black87),
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(left: 20, right: 20, top: 70),
+            padding: EdgeInsets.only(left: 20, right: 20),
+            height: 54,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: Colors.grey[200],
+              boxShadow: [
+                BoxShadow(
+                    offset: Offset(0, 10),
+                    blurRadius: 50,
+                    color: Color(0xffEEEEEE)),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Please enter your email";
-              }
-              return null;
-            },
-            controller: _user,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFBDBDBD))),
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFBDBDBD))),
+            child: TextFormField(
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Please enter your email";
+                }
+                return null;
+              },
+              controller: _user,
+              cursorColor: Colors.red,
+              decoration: InputDecoration(
+                icon: Icon(
+                  Icons.email,
+                  color: Colors.red,
+                ),
+                hintText: "Enter Email",
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+              ),
             ),
           ),
           SizedBox(
@@ -140,21 +145,32 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  height: 60,
-                  onPressed: () {
-                    checkUser();
-                  },
-                  color: Colors.redAccent,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50)),
-                  child: const Text(
-                    "Send recover code",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+              GestureDetector(
+                onTap: () {
+                  checkUser();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 70),
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  height: 54,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colors.red, Colors.redAccent],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight),
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.grey[200],
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 10),
+                          blurRadius: 50,
+                          color: Color(0xffEEEEEE)),
+                    ],
+                  ),
+                  child: Text(
+                    "SEND RECOVERY MAIL",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),

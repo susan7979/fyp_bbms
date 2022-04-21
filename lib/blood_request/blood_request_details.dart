@@ -1,162 +1,265 @@
 import 'package:flutter/material.dart';
+import 'package:fyp_bbms/misc/custom_app_bar.dart';
+import 'package:fyp_bbms/misc/khalti_main.dart';
 
 import 'package:fyp_bbms/models/blood_request.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-class BloodRequestDetails extends StatelessWidget {
-  final String name;
-  final String gender;
-  final String age;
-  final String hospitalName;
-  final String hospitalAddress;
-  final String email;
-  final String phoneNumber;
-  final String bloodGroup;
-  final String bloodAmount;
-  final String reason;
+class BloodRequestDetails extends StatefulWidget {
+  final BloodRequest bloodRequest;
 
   BloodRequestDetails({
     Key? key,
-    required this.name,
-    required this.gender,
-    required this.age,
-    required this.hospitalName,
-    required this.hospitalAddress,
-    required this.email,
-    required this.phoneNumber,
-    required this.bloodGroup,
-    required this.bloodAmount,
-    required this.reason,
+    required this.bloodRequest,
   }) : super(key: key);
 
   @override
+  State<BloodRequestDetails> createState() => _BloodRequestDetailsState();
+}
+
+class _BloodRequestDetailsState extends State<BloodRequestDetails> {
+  static Future<void> openMap(double latitude, double longitude) async {
+    final String googleUrl =
+        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+    if (await canLaunch(googleUrl)) {
+      await launch(
+        googleUrl,
+      );
+    } else {
+      print('Could not launch $googleUrl');
+      throw 'Could not launch $googleUrl';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Details",
-          style: TextStyle(color: Theme.of(context).primaryColor),
-        ),
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        elevation: 0,
-        backgroundColor: Colors.grey[50],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              child: Text(
-                "Name: $name",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+    double latitude = double.parse(widget.bloodRequest.latitude);
+    double longitude = double.parse(widget.bloodRequest.longitude);
+    final double screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: CustomAppBar(
+              title: "",
             ),
-            Text(
-              gender,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: FloatingActionButton.extended(
+              backgroundColor: Colors.red.shade800,
+              icon: const Icon(Icons.payment),
+              label: Text('Donate'),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => KhaltiPaymentApp(),
+                ));
+              },
             ),
-            Text(
-              age,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              hospitalName,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              hospitalAddress,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              email,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              phoneNumber,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              bloodGroup,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              bloodAmount,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              reason,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    launch('mailto:$email');
-                  },
-                  icon: Icon(
-                    Icons.mail,
-                    color: Colors.red,
-                    size: 35,
+            body: Container(
+              color: Colors.grey[50],
+              padding: const EdgeInsets.only(left: 20),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(left: 0, right: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // IconButton(
+                        //     padding: EdgeInsets.zero,
+                        //     constraints: BoxConstraints(),
+                        //     icon: Icon(Icons.arrow_back_ios,
+                        //         color: Color(0xFF363f93)),
+                        //     onPressed: () => Navigator.pop(context))
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    launch('tel:$phoneNumber');
-                  },
-                  icon: Icon(
-                    Icons.call,
-                    color: Colors.green,
-                    size: 35,
+                  SizedBox(
+                    height: 15,
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Share.share('check out my website https://example.com');
-                  },
-                  icon: Icon(
-                    Icons.share,
-                    color: Colors.blue,
-                    size: 35,
+                  Container(
+                    child: Row(
+                      children: [
+                        // Material(
+                        //   elevation: 0.0,
+                        //   child: Container(
+                        //     height: 180,
+                        //     width: 150,
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //             color: Colors.grey.withOpacity(0.5),
+                        //             spreadRadius: 5,
+                        //             blurRadius: 7,
+                        //             offset: Offset(0, 3))
+                        //       ],
+                        //       // image: DecorationImage(
+                        //       //   image: NetworkImage(
+                        //       //     "http://mark.dbestech.com/uploads/"+this.widget.articleInfo.img
+                        //       //   ),
+                        //       //   fit:BoxFit.fill
+                        //       // )
+                        //     ),
+                        //   ),
+                        // ),
+                        Container(
+                          width: screenWidth - 30 - 100 - 20,
+                          margin: const EdgeInsets.only(left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                widget.bloodRequest.name,
+                                style: TextStyle(fontSize: 30),
+                              ),
+                              Text("Age: ${widget.bloodRequest.age}"),
+                              Text("Gender: ${widget.bloodRequest.gender}"),
+                              Text(
+                                  "Hospital Name: ${widget.bloodRequest.hospitalName}"),
+                              Text(
+                                  "Hospital Address: ${widget.bloodRequest.hospitalAddress}"),
+                              Text(
+                                  "Blood Group: ${widget.bloodRequest.bloodGroup}"),
+                              Text(
+                                  "Blood AmountRequired: ${widget.bloodRequest.bloodAmount}"),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
-        ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Divider(color: Color(0xFF7b8ea3)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                launch('mailto:${widget.bloodRequest.email}');
+                              },
+                              child: Icon(
+                                Icons.mail,
+                                size: 40,
+                                color: Colors.red,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("Mail"),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                                onPressed: () async {
+                                  openMap(latitude, longitude);
+                                },
+                                icon: Icon(
+                                  Icons.pin_drop_sharp,
+                                  color: Colors.blue,
+                                  size: 40,
+                                )),
+                            Text("Location"),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                launch(
+                                    'tel:${widget.bloodRequest.phoneNumber}');
+                              },
+                              child: Icon(
+                                Icons.phone,
+                                color: Colors.green,
+                                size: 40,
+                              ),
+                            ),
+                            Text("Call")
+                          ],
+                        ),
+                        // Row(
+                        //   mainAxisSize: MainAxisSize.min,
+                        //   children: <Widget>[
+                        //     IconButton(
+                        //         onPressed: () {
+                        //           launch('mailto:$email');
+                        //         },
+                        //         icon: Icon(
+                        //           Icons.mail,
+                        //           color: Colors.red,
+                        //           size: 40,
+                        //         )),
+                        //   ],
+                        // )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          "Reason for blood Request",
+                          style: TextStyle(fontSize: 24, color: Colors.red),
+                        ),
+                      ),
+                      Expanded(child: Container())
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: 200,
+                    child: Text(widget.bloodRequest.reason),
+                  ),
+                  Divider(color: Color(0xFF7b8ea3)),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     // Navigator.push(context, MaterialPageRoute(builder: (context)=>AllBooks()));
+                  //   },
+                  //   child: Container(
+                  //     padding: const EdgeInsets.only(right: 20),
+                  //     child: Row(
+                  //       children: [
+                  //         Text("asas"),
+                  //         Expanded(child: Container()),
+                  //         IconButton(
+                  //             icon: Icon(Icons.arrow_forward_ios),
+                  //             onPressed: null)
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            )),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,104 +19,112 @@ class BloodRequestCard extends StatefulWidget {
 }
 
 class _BloodRequestCardState extends State<BloodRequestCard> {
-  List _bloodReq = [];
-
-  getBlood() async {
-    var response = await http.get(Uri.parse(
-        "http://192.168.1.79/flutter-login-signup/user_dashboard/request_blood.php"));
-    if (response.statusCode == 200) {
-      setState(() {
-        _bloodReq = json.decode(response.body);
-      });
-
-      return _bloodReq;
-    }
-  }
-
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getBlood();
-  }
-
   @override
   Widget build(BuildContext context) {
     var index;
-    return Card(
-      color: Colors.red[200],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 12,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Center(
-              child: ListTile(
-                leading: FaIcon(FontAwesomeIcons.user),
-                title: Padding(
-                  padding: const EdgeInsets.only(top: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.bloodRequest.name,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        _bloodReq[index]['post_time'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        child: Container(
+          // color: Color.fromARGB(255, 241, 241, 241),
+          // shape:
+          //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          // elevation: 12,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            // color: Colors.black45,
+            gradient: LinearGradient(colors: [
+              Color.fromARGB(255, 255, 152, 145),
+              Color.fromARGB(255, 245, 70, 58)
+            ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Container(
+                  padding: EdgeInsets.only(right: 12.0),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          right:
+                              BorderSide(width: 1.0, color: Colors.white24))),
+                  child: Container(
+                    height: 200,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [],
+                    ),
+                    child: Center(
+                      child: Text(
                         widget.bloodRequest.bloodGroup,
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        widget.bloodRequest.hospitalName,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        widget.bloodRequest.hospitalAddress,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
+                    ),
+                  ),
+                ),
+                title: Container(
+                  decoration: BoxDecoration(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.bloodRequest.name,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        // Divider(
+                        //   color: Colors.black,
+                        //   thickness: 1,
+                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.bloodRequest.hospitalName,
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                              color: Colors.white70,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          widget.bloodRequest.hospitalAddress,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          widget.bloodRequest.gender,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  child: const Text(
-                    'Contact Patient',
-                    style: TextStyle(fontSize: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(widget.bloodRequest.postTime),
                   ),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text(
-                    'Location',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
-              ],
-            ),
-          ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Tap to see more..."),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
